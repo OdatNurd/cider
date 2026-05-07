@@ -1145,6 +1145,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   }
 
   onDragEnded(event: CdkDragEnd<any>, items: Positionable[], item: Positionable) {
+    // Capture the original position before applying the new drag position
+    const originalPos = { x: item.pos.x, y: item.pos.y };
+
     const rawPos = event.source.getFreeDragPosition();
     const pos = { x: rawPos.x / this.simulatorZoom, y: rawPos.y / this.simulatorZoom };
 
@@ -1168,34 +1171,18 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       // Move all cards from source to target
       targetStack.cards.push(...sourceStack.cards);
 
-      // Check if source stack is the discard pile
-      if (sourceStack === this.discard) {
-        // Clear cards from discard
-        sourceStack.cards = [];
-
-        // Reposition discard pile near the target stack
-        // Offset by a bit so it's visible "popped out"
-        let newX = targetStack.pos.x + 120; // Offset to the right
-        let newY = targetStack.pos.y + 20;
-
-        // Get dimensions for clamping
-        let width = GameSimulatorComponent.BASE_CARD_WIDTH;
-        let height = GameSimulatorComponent.BASE_CARD_HEIGHT;
-
-        const stackEl = document.getElementById(targetStack.uniqueId);
-        if (stackEl) {
-          const rect = stackEl.getBoundingClientRect();
-          width = rect.width / this.simulatorZoom;
-          height = rect.height / this.simulatorZoom;
-        }
-
-        const clampedPos = this.clampPosition({ x: newX, y: newY }, width, height);
-        this.gameStateService.bringToFront(sourceStack);
-        sourceStack.pos = clampedPos;
-
-      } else {
-        // Remove source stack normally
+      // Transient stacks get destroyed, but we put all other stacks bac to
+      // where they started.
+      if (sourceStack.transient) {
         this.deleteItem(this.stacks, sourceStack);
+      } else {
+        sourceStack.cards = [];
+        
+        // Defer setting the position for the source stack so that Angular 
+        // notices the change.
+        setTimeout(() => {
+          sourceStack.pos = originalPos;
+        });
       }
 
       this.hoveredItem = undefined;

@@ -210,3 +210,13 @@ URL to be injected in for any matches.
   do that without calling them back to their parent deck.
 
   This makes some game actions easier to manage.
+
+- The behaviour of dropping one stack onto another stack has been made more
+  intuitive.
+
+  Previously, this would always delete the source stack entirely, which means
+  that a deck would be deleted if you tried to discard it, or if you try to
+  combine it with another deck.
+
+  Now, if such a stack is transient, it is deleted, but otherwise it is emptied
+  and jumped back to the position it started at before the drag started.
