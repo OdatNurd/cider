@@ -72,3 +72,15 @@ to inject your custom card icons into your notes, for example.
 
 Here we add that by a little bit of regex trickery, allowing the loaded asset
 URL to be injected in for any matches.
+
+## Game Simulator
+
+### Bug Fixes
+
+- The state of the simulator that you get when you open it initially is not the
+  same as the state that you get when you use the reset option. This seems to be
+  because the initial state is not calculated the same way as a reset is.
+
+  For the sake of repeatability and consistency, settle on a single layout; the
+  one selected is the one that looked the most visually pleasing to my eye,
+  though this could certainly be done better.
