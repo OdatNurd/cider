@@ -149,6 +149,8 @@
         "draw-card": "Kaart trekken",
         "draw-card-facedown": "Kaart gesloten trekken",
         "draw-specific-card": "Specifieke kaart trekken",
+        "hidden-card": "Gedekte kaart",
+        "reveal-hidden": "Verborgen kaarten onthullen",
         "shuffle-stack": "Stapel schudden",
         "mix-stack": "Mengen (Behoud oriëntatie)",
         "flip-stack": "Stapel omdraaien",

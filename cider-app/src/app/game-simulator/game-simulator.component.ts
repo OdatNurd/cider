@@ -118,10 +118,12 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   drawSpecificCardSearchQuery: string = '';
   drawSpecificCardStack: CardStack | undefined;
   filteredCards: GameCard[] = [];
+  drawSpecificCardRevealHidden: boolean = false;
 
   openDrawSpecificCardDialog(stack: CardStack) {
     this.drawSpecificCardStack = stack;
     this.drawSpecificCardSearchQuery = '';
+    this.drawSpecificCardRevealHidden = false;
     this.filterCards();
     this.drawSpecificCardDialogVisible = true;
   }
@@ -131,13 +133,18 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       this.filteredCards = [];
       return;
     }
+    
+    const hiddenCardName = this.translate.instant('simulator.hidden-card').toLowerCase();
+    
     if (!this.drawSpecificCardSearchQuery.trim()) {
       this.filteredCards = [...this.drawSpecificCardStack.cards];
     } else {
       const query = this.drawSpecificCardSearchQuery.toLowerCase();
-      this.filteredCards = this.drawSpecificCardStack.cards.filter(gameCard =>
-        gameCard.card.name.toLowerCase().includes(query)
-      );
+      this.filteredCards = this.drawSpecificCardStack.cards.filter(gameCard => {
+        const isVisible = gameCard.faceUp || this.drawSpecificCardRevealHidden;
+        const displayName = isVisible ? gameCard.card.name.toLowerCase() : hiddenCardName;
+        return displayName.includes(query);
+      });
     }
   }
 

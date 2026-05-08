@@ -197,15 +197,21 @@
 <p-dialog [header]="'simulator.draw-specific-card' | translate" [(visible)]="drawSpecificCardDialogVisible"
   [modal]="true" [draggable]="false" [resizable]="false" [style]="{ width: '25rem' }">
   <div class="dialog-content">
-    <span class="p-input-icon-left full-width-input">
+    <span class="p-input-icon-left full-width-input" style="display: block; margin-bottom: 0.5rem;">
       <i class="pi pi-search"></i>
       <input pInputText type="text" [(ngModel)]="drawSpecificCardSearchQuery" (ngModelChange)="filterCards()"
         [placeholder]="'controls.search' | translate" class="full-width-input" autofocus />
     </span>
+    <div style="margin-bottom: 1rem; display: flex; justify-content: flex-end;">
+      <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem;">
+        <input type="checkbox" [(ngModel)]="drawSpecificCardRevealHidden" (ngModelChange)="filterCards()">
+        {{ 'simulator.reveal-hidden' | translate }}
+      </label>
+    </div>
     <div class="card-list">
       @for (card of filteredCards; track card.uniqueId) {
       <div class="card-item" (click)="onDrawSpecificCardSelect(card)">
-        {{ card.card.name }}
+        {{ (card.faceUp || drawSpecificCardRevealHidden) ? card.card.name : ('simulator.hidden-card' | translate) }}
       </div>
       }
       @if (filteredCards.length === 0) {

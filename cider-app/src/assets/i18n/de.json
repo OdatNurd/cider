@@ -149,6 +149,8 @@
         "draw-card": "Karte ziehen",
         "draw-card-facedown": "Karte verdeckt ziehen",
         "draw-specific-card": "Bestimmte Karte ziehen",
+        "hidden-card": "Verdeckte Karte",
+        "reveal-hidden": "Verborgene Karten aufdecken",
         "shuffle-stack": "Stapel mischen",
         "mix-stack": "Mischen (Ausrichtung beibehalten)",
         "flip-stack": "Stapel umdrehen",

@@ -149,6 +149,8 @@
         "draw-card": "Robar carta",
         "draw-card-facedown": "Robar carta boca abajo",
         "draw-specific-card": "Robar carta específica",
+        "hidden-card": "Carta boca abajo",
+        "reveal-hidden": "Revelar cartas ocultas",
         "shuffle-stack": "Barajar mazo",
         "mix-stack": "Mezclar (Mantener orientación)",
         "flip-stack": "Voltear mazo",

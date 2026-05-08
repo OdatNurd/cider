@@ -149,6 +149,8 @@
         "draw-card": "Pesca una carta",
         "draw-card-facedown": "Pesca una carta coperta",
         "draw-specific-card": "Pesca una carta specifica",
+        "hidden-card": "Carta coperta",
+        "reveal-hidden": "Rivela carte nascoste",
         "shuffle-stack": "Mescola il mazzo",
         "mix-stack": "Mescola (Mantieni orientamento)",
         "flip-stack": "Gira il mazzo",

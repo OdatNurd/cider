@@ -186,3 +186,11 @@ URL to be injected in for any matches.
   addition of a modifier as otherwise you can't lay cards near each other
   without stacking them. Stacks created this way are created as `transient` so
   they go away when you empty them.
+
+- The modal that allows you to draw a specific card from a stack has been
+  augmented so that cards in the stack that are face down don't have their name
+  revealed unless you toggle the checkbox in the modal to make them visible.
+
+  This allows for the dialog to be used to draw any card or to introspect the
+  content of a stack without revealing any information that you might not want
+  revealed.

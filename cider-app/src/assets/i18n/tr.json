@@ -149,6 +149,8 @@
         "draw-card": "Kart Çek",
         "draw-card-facedown": "Kapalı Kart Çek",
         "draw-specific-card": "Belirli Kartı Çek",
+        "hidden-card": "Kapalı Kart",
+        "reveal-hidden": "Gizli Kartları Göster",
         "shuffle-stack": "Yığını Karıştır",
         "mix-stack": "Karıştır (Yönü Koru)",
         "flip-stack": "Yığını Ters Çevir",

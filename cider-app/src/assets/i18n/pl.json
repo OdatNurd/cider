@@ -149,6 +149,8 @@
         "draw-card": "Dobierz kartę",
         "draw-card-facedown": "Dobierz kartę zakrytą",
         "draw-specific-card": "Dobierz określoną kartę",
+        "hidden-card": "Zakryta karta",
+        "reveal-hidden": "Odkryj ukryte karty",
         "shuffle-stack": "Przetasuj stos",
         "mix-stack": "Mieszaj (Zachowaj ułożenie)",
         "flip-stack": "Odwróć stos",

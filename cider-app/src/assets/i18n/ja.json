@@ -149,6 +149,8 @@
         "draw-card": "カードを引く",
         "draw-card-facedown": "裏向きでカードを引く",
         "draw-specific-card": "特定のカードを引く",
+        "hidden-card": "伏せられたカード",
+        "reveal-hidden": "隠されたカードを公開する",
         "shuffle-stack": "山札をシャッフル",
         "mix-stack": "混ぜる（向きを維持）",
         "flip-stack": "山札をひっくり返す",
