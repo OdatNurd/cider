@@ -157,6 +157,7 @@
         "flip-stack": "Retourner la pile",
         "split-in-half": "Diviser en deux",
         "split-by-attribute": "Diviser par attribut",
+        "split-by-deck": "Séparer par paquet",
         "delete": "Supprimer",
         "flip-card": "Retourner la carte",
         "create-stack": "Créer une pile",

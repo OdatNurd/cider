@@ -157,6 +157,7 @@
         "flip-stack": "翻转堆",
         "split-in-half": "对半分",
         "split-by-attribute": "按属性分",
+        "split-by-deck": "按牌组拆分",
         "delete": "删除",
         "flip-card": "翻转卡片",
         "create-stack": "创建牌堆",

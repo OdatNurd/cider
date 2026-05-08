@@ -157,6 +157,7 @@
         "flip-stack": "덱 뒤집기",
         "split-in-half": "반으로 나누기",
         "split-by-attribute": "속성별로 나누기",
+        "split-by-deck": "덱으로 분할",
         "delete": "삭제",
         "flip-card": "카드 뒤집기",
         "create-stack": "덱 만들기",

@@ -157,6 +157,7 @@
         "flip-stack": "山札をひっくり返す",
         "split-in-half": "半分に分ける",
         "split-by-attribute": "属性ごとに分ける",
+        "split-by-deck": "デッキで分割",
         "delete": "削除",
         "flip-card": "カードを裏返す",
         "create-stack": "山札を作る",

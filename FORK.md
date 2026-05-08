@@ -204,4 +204,9 @@ URL to be injected in for any matches.
   whatever other stacks they might be in (other decks, transient stacks, the
   discard, etc).
 
+  Since all cards now have their origin deck in them, stacks with cards from
+  mixed decks now have a context menu item that allows splitting the stack by
+  deck, allowing for easily extracting all of the cards out, should you want to
+  do that without calling them back to their parent deck.
+
   This makes some game actions easier to manage.

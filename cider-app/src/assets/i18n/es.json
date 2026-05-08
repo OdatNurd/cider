@@ -157,6 +157,7 @@
         "flip-stack": "Voltear mazo",
         "split-in-half": "Dividir a la mitad",
         "split-by-attribute": "Dividir por atributo",
+        "split-by-deck": "Dividir por mazo",
         "delete": "Eliminar",
         "flip-card": "Voltear carta",
         "create-stack": "Crear mazo",

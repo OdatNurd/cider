@@ -645,6 +645,12 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         }))
       },
       {
+        label: this.translate.instant('simulator.split-by-deck'),
+        icon: 'pi pi-clone',
+        visible: new Set(stack.cards.map(card => card.originDeckId)).size > 1,
+        command: () => this.splitByDeck(stack)
+      },
+      {
         label: this.translate.instant('simulator.delete'),
         icon: 'pi pi-trash',
         command: () => this.deleteItem(this.stacks, stack),
@@ -1057,6 +1063,53 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
 
     // remove cards taken out of the main stack, and remove stack if empty and deletable
     stack.cards = stack.cards.filter((card) => !newStacks?.some((newStack) => newStack.cards.includes(card)));
+    if (stack.cards.length < 1 && stack.deletable) {
+      this.deleteItem(this.stacks, stack);
+    }
+
+    // add new stacks to the game
+    newStacks?.forEach((stack) => {
+      this.gameStateService.bringToFront(stack);
+      this.stacks.push(stack);
+    });
+  }
+
+  public splitByDeck(stack: CardStack) {
+    if (stack.cards.length < 2) {
+      return;
+    }
+    
+    // Grab all unique deck lineages present in this stack
+    const uniqueOrigins = Array.from(new Set(stack.cards.map(card => card.originDeckId).filter(id => id)));
+
+    // Exclude the source stack's own origin ID so it retains its native cards
+    const originsToExtract = uniqueOrigins.filter(id => id !== stack.originDeckId);
+
+    if (originsToExtract.length < 1) {
+      return;
+    }
+
+    const newStacks = originsToExtract.map((originId) => {
+      // Cross-check to find the original base deck for this origin ID
+      const baseStack = this.stacks.find(s => s.originDeckId === originId && !s.transient);
+      const deckName = baseStack ? baseStack.name : 'Unknown Deck';
+
+      return {
+        uniqueId: StringUtils.generateRandomString(),
+        name: `${deckName} split`,
+        cards: stack.cards.filter((card) => card.originDeckId === originId),
+        faceUp: stack.faceUp,
+        pos: {
+          x: stack.pos.x + (Math.random() * 100 - 50),
+          y: stack.pos.y + (Math.random() * 100 - 50)
+        },
+        deletable: true,
+        transient: true,
+      } as CardStack;
+    }).filter((cardStack) => cardStack.cards.length > 0);
+
+    // remove cards taken out of the main stack, and remove stack if empty and deletable
+    stack.cards = stack.cards.filter((card) => !newStacks.some((newStack) => newStack.cards.includes(card)));
     if (stack.cards.length < 1 && stack.deletable) {
       this.deleteItem(this.stacks, stack);
     }
