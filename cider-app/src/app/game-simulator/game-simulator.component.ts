@@ -1058,11 +1058,38 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     if (this.hoveredItem && this.hoveredItem !== card) {
       const targetItem = this.hoveredItem as any;
 
-      // Only push if the target is actually a Stack
-      if (targetItem.cards) {
+      // If the target is a card stack, then we can push this card onto it.
+      if (targetItem.cards && targetItem.uniqueId) {
         const index = cards.indexOf(card);
-        cards.splice(index, 1);
+        if (index > -1) {
+          cards.splice(index, 1);
+        }
         targetItem.cards.push(card);
+      }
+
+      // If the target is another Game Card, then drop it, but create a new stack if Shift is held.
+      else if (targetItem.card && targetItem.uniqueId && this.isShiftPressed) {
+        const sourceIndex = cards.indexOf(card);
+        if (sourceIndex > -1) {
+          cards.splice(sourceIndex, 1);
+        }
+
+        const targetIndex = cards.indexOf(targetItem);
+        if (targetIndex > -1) {
+          cards.splice(targetIndex, 1);
+        }
+
+        const newStack: CardStack = {
+          uniqueId: StringUtils.generateRandomString(),
+          name: 'Stack',
+          cards: [targetItem, card],
+          faceUp: targetItem.faceUp,
+          pos: { x: targetItem.pos.x, y: targetItem.pos.y },
+          rotation: targetItem.rotation,
+          deletable: true,
+        };
+        this.gameStateService.bringToFront(newStack);
+        this.stacks.push(newStack);
       }
 
       // Crucial: Clear hoveredItem to prevent ghost merging on future drops!

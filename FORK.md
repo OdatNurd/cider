@@ -140,3 +140,13 @@ URL to be injected in for any matches.
   augmented to also work with `ctrl` as well.
 
   The shortcut popup is also augmented to show these keys.
+
+- A natural behaviour when playing with cards is the idea of stacking arbitrary
+  cards together, such as putting one card on top of another, or tucked under,
+  etc. This is what stacks are, but creating a stack manually to do this is a
+  bit of a pain point.
+
+  Dropping a card onto another single card while holding the `shift` key causes
+  the target card to be promoted into a stack directly. This is done with the
+  addition of a modifier as otherwise you can't lay cards near each other
+  without stacking them.
