@@ -558,16 +558,6 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         "disabled": stack.cards.length === 0
       },
       {
-        label: this.translate.instant('simulator.rename-stack'),
-        icon: 'pi pi-pencil',
-        command: () => {
-          this.stackToRename = stack;
-          this.renameStackName = stack.name;
-          this.renameDialogVisible = true;
-        },
-        disabled: stack === this.discard
-      },
-      {
         label: this.translate.instant('simulator.draw-card-facedown'),
         icon: 'pi pi-eye-slash',
         command: () => this.drawCard(stack, false),
@@ -580,10 +570,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         command: () => this.openDrawSpecificCardDialog(stack)
       },
       {
-        label: this.translate.instant('simulator.recall-deck'),
-        icon: 'pi pi-inbox',
-        visible: !!stack.originDeckId,
-        command: () => this.recallDeck(stack)
+        separator: true,
       },
       {
         label: this.translate.instant('simulator.shuffle-stack'),
@@ -610,6 +597,15 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         disabled: stack.cards.length < 2
       },
       {
+        label: this.translate.instant('simulator.recall-deck'),
+        icon: 'pi pi-inbox',
+        visible: !!stack.originDeckId,
+        command: () => this.recallDeck(stack)
+      },
+      {
+        separator: true,
+      },      
+      {
         label: this.translate.instant('simulator.flip-stack'),
         icon: 'pi pi-refresh',
         command: () => this.flipStack(stack),
@@ -625,6 +621,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         icon: 'pi pi-refresh',
         command: () => this.rotateStack(stack, 90)
       },
+      {
+        separator: true,
+      },      
       {
         label: this.translate.instant('simulator.split-in-half'),
         icon: 'pi pi-clone',
@@ -651,6 +650,19 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         visible: new Set(stack.cards.map(card => card.originDeckId)).size > 1,
         command: () => this.splitByDeck(stack)
       },
+      {
+        separator: true,
+      },
+      {
+        label: this.translate.instant('simulator.rename-stack'),
+        icon: 'pi pi-pencil',
+        command: () => {
+          this.stackToRename = stack;
+          this.renameStackName = stack.name;
+          this.renameDialogVisible = true;
+        },
+        disabled: stack === this.discard
+      },      
       {
         label: this.translate.instant('simulator.delete'),
         icon: 'pi pi-trash',

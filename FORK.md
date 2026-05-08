@@ -111,6 +111,10 @@ URL to be injected in for any matches.
   sure if there was some other reason for doing it this way that this may be
   subverting.
 
+- The stack context menu was a little unorganized, at least to my OCD type eye.
+  This was slightly rearranged, with some separators to make the options jump
+  out a little more.
+
 ### Enhancements
 
 - Middle-click on a stack now zooms the stack, so that it is easier to read a
