@@ -187,6 +187,9 @@ URL to be injected in for any matches.
   without stacking them. Stacks created this way are created as `transient` so
   they go away when you empty them.
 
+  This also works with `ctrl` instead of `shift`, which behaves the same but
+  puts the new card under the existing one, instead of on top.
+
 - The modal that allows you to draw a specific card from a stack has been
   augmented so that cards in the stack that are face down don't have their name
   revealed unless you toggle the checkbox in the modal to make them visible.
@@ -220,3 +223,6 @@ URL to be injected in for any matches.
 
   Now, if such a stack is transient, it is deleted, but otherwise it is emptied
   and jumped back to the position it started at before the drag started.
+
+- When dragging and dropping to combine stacks, holding `ctrl` will cause the
+  new cards to be added to the destination at the bottom instead of at the top.

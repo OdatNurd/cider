@@ -59,6 +59,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   offScreenIndicators = { top: 0, bottom: 0, left: 0, right: 0 };
   private isPanning = false;
   public isShiftPressed = false;
+  public isCtrlPressed = false;
 
   private _scaledPosMap = new Map<string, Point | any>();
   private _lastZoomForScaledPos = 1;
@@ -1169,7 +1170,11 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       const sourceStack = item as CardStack;
 
       // Move all cards from source to target
-      targetStack.cards.push(...sourceStack.cards);
+      if (this.isCtrlPressed) {
+        targetStack.cards.unshift(...sourceStack.cards);
+      } else {
+        targetStack.cards.push(...sourceStack.cards);
+      }
 
       // Transient stacks get destroyed, but we put all other stacks bac to
       // where they started.
@@ -1222,11 +1227,15 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         if (index > -1) {
           cards.splice(index, 1);
         }
-        targetItem.cards.push(card);
+        if (this.isCtrlPressed) {
+          targetItem.cards.unshift(card);
+        } else {
+          targetItem.cards.push(card);
+        }
       }
 
       // If the target is another Game Card, then drop it, but create a new stack if Shift is held.
-      else if (targetItem.card && targetItem.uniqueId && this.isShiftPressed) {
+      else if (targetItem.card && targetItem.uniqueId && (this.isShiftPressed || this.isCtrlPressed)) {
         const sourceIndex = cards.indexOf(card);
         if (sourceIndex > -1) {
           cards.splice(sourceIndex, 1);
@@ -1237,10 +1246,12 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
           cards.splice(targetIndex, 1);
         }
 
+        const stackCards = this.isCtrlPressed ? [card, targetItem] : [targetItem, card];
+
         const newStack: CardStack = {
           uniqueId: StringUtils.generateRandomString(),
           name: 'Stack',
-          cards: [targetItem, card],
+          cards: stackCards,
           faceUp: targetItem.faceUp,
           pos: { x: targetItem.pos.x, y: targetItem.pos.y },
           rotation: targetItem.rotation,
@@ -1602,6 +1613,11 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       this.isShiftPressed = false;
       requiresChangeDetection = true;
     }
+    
+    if (!event.ctrlKey && this.isCtrlPressed) {
+      this.isCtrlPressed = false;
+      requiresChangeDetection = true;
+    }
 
     if (event.button == 1 && this.magnifiedCard) {
       this.magnifiedCard = undefined;
@@ -1623,6 +1639,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   onWindowKeyDown(event: KeyboardEvent) {
     if (event.key === 'Shift') {
       this.isShiftPressed = true;
+    }
+    if (event.key === 'Control') {
+      this.isCtrlPressed = true;
     }
 
     // Do not capture keyboard shortcuts if the user is typing in an input field (like a search box or rename dialog)
@@ -1686,6 +1705,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   onWindowKeyUp(event: KeyboardEvent) {
     if (event.key === 'Shift') {
       this.isShiftPressed = false;
+    }
+    if (event.key === 'Control') {
+      this.isCtrlPressed = false;
     }
   }
 
