@@ -58,6 +58,7 @@ export class LocalStorageService {
   static readonly RENDERER_TYPE = "renderer-type";
   static readonly EXPORT_CONFIG = "export-config";
   static readonly PREVIEW_SETTINGS = "preview-settings";
+  static readonly TREE_STATE_PREFIX = "sidebar-tree-state-";
 
   public recentProjectUrls: BehaviorSubject<PersistentPath[]>;
 
@@ -71,6 +72,9 @@ export class LocalStorageService {
       localStorage.setItem(LocalStorageService.RECENT_PROJECT_URLS, JSON.stringify(urls));
       this.recentProjectUrls.next(urls);
     });
+    
+    // Clean up orphaned tree states
+    this.cleanOrphanedStates();
   }
 
   public addRecentProjectUrl(persistentUrl: PersistentPath) {
@@ -158,4 +162,42 @@ export class LocalStorageService {
     localStorage.setItem(LocalStorageService.PREVIEW_SETTINGS, JSON.stringify(settings));
   }
 
+  public getTreeState(projectPath: string): string[] | null {
+    const stateStr = localStorage.getItem(`${LocalStorageService.TREE_STATE_PREFIX}${projectPath}`);
+    if (!stateStr) return null;
+    try {
+      return JSON.parse(stateStr);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  public setTreeState(projectPath: string, state: string[]) {
+    localStorage.setItem(`${LocalStorageService.TREE_STATE_PREFIX}${projectPath}`, JSON.stringify(state));
+  }
+
+  public async cleanOrphanedStates() {
+    const prefix = LocalStorageService.TREE_STATE_PREFIX;
+    const keysToCheck: string[] = [];
+    
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(prefix)) {
+        keysToCheck.push(key);
+      }
+    }
+
+    for (const key of keysToCheck) {
+      const projectPath = key.substring(prefix.length);
+      try {
+        const files = await this.electronService.listDirectory({ path: projectPath } as PersistentPath);
+        if (!files || files.length === 0) {
+          localStorage.removeItem(key);
+        }
+      } catch (e) {
+        // If error reading directory, assume it's gone
+        localStorage.removeItem(key);
+      }
+    }
+  }
 }

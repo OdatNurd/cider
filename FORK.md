@@ -28,6 +28,22 @@ In addition, as a Slackware user `deb` files are not as useful (although they
 can be turned into packages), so the Electron builder for Linux was extended to
 also generate a Tarball.
 
+## Project Tree
+
+The project tree in the sidebar can get a little busy with a lot of assets,
+particularly when they are structured into folders. With more than one deck of
+cards it is also a little busy in the sidebar.
+
+So as a bit of a UX improvement, events are caught in the sidebar to indicate
+when a node is being expanded or collapsed, and that state information is
+written to local storage using a key that derives from the project path. This
+is then used to restore that state when the tree is recreated on package
+reload.
+
+As a safety measure, when starting up we scan over all of the localStorage keys
+that represent tree data and verify if the path to those files is still present
+or not, and if not, remove that key, just to stop storage bloat.
+
 ## Documents
 
 Something that caught me by surprise since it is not mentioned in the

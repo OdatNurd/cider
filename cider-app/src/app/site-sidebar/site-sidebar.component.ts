@@ -16,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 import { AppDB } from '../data-services/indexed-db/db';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectStateService } from '../data-services/services/project-state.service';
+import { LocalStorageService } from '../data-services/local-storage/local-storage.service';
 import { PersistentPath } from '../data-services/types/persistent-path.type';
 import { Asset } from '../data-services/types/asset.type';
 
@@ -36,6 +37,7 @@ export class SiteSidebarComponent implements OnInit {
   dialogTitle: string = '';
   service: EntityService<any, any>;
   entity: any = {};
+  currentProjectPath: string | undefined = '';
 
   constructor(private decksService: DecksService,
     private cardAttributesService: CardAttributesService,
@@ -49,6 +51,7 @@ export class SiteSidebarComponent implements OnInit {
     private httpClient: HttpClient,
     private router: Router,
     private projectStateService: ProjectStateService,
+    private localStorageService: LocalStorageService,
     private db: AppDB) {
     // Initialize or fetch any necessary data here
     // observe the decks and templates
@@ -94,6 +97,53 @@ export class SiteSidebarComponent implements OnInit {
     });
   }
 
+  getNodeKey(node: TreeNode): string | null {
+    if (!node || !node.data) return node.label || null;
+    return node.data.url || node.data.path || node.data.id || node.label || null;
+  }
+
+  saveTreeState(nodes: TreeNode[]) {
+    if (!this.currentProjectPath) return;
+    const expandedKeys: string[] = [];
+    const traverse = (nlist: TreeNode[]) => {
+      nlist.forEach(n => {
+        if (n.expanded) {
+          const key = this.getNodeKey(n);
+          if (key) expandedKeys.push(key);
+        }
+        if (n.children) traverse(n.children);
+      });
+    };
+    traverse(nodes);
+    this.localStorageService.setTreeState(this.currentProjectPath, expandedKeys);
+  }
+
+  restoreTreeState(nodes: TreeNode[]) {
+    if (!this.currentProjectPath) return;
+    const expandedKeys = this.localStorageService.getTreeState(this.currentProjectPath);
+    if (!expandedKeys) return;
+    try {
+      const traverse = (nlist: TreeNode[]) => {
+        nlist.forEach(n => {
+          const key = this.getNodeKey(n);
+          if (key) {
+            n.expanded = expandedKeys.includes(key);
+          }
+          if (n.children) traverse(n.children);
+        });
+      };
+      traverse(nodes);
+    } catch (e) {
+      console.error('Error restoring tree state', e);
+    }
+  }
+
+  onNodeStateChange() {
+    if (this.files) {
+      this.saveTreeState(this.files);
+    }
+  }
+
   async updateFiles() {
     if (!this.db.isOpen()) {
       console.warn('Database is closed, skipping sidebar update');
@@ -110,6 +160,7 @@ export class SiteSidebarComponent implements OnInit {
       // Setup project home node
       // -----------------------------------------------
       await firstValueFrom(this.electronService.getProjectHomeUrl()).then(homeUrl => {
+        this.currentProjectPath = homeUrl?.path;
         let projectName = StringUtils.lastDirectoryFromUrl(homeUrl?.path
           ?? this.translate.instant('sidebar.unknown-project'));
         updatedFiles.push({
@@ -599,6 +650,7 @@ export class SiteSidebarComponent implements OnInit {
 
       updatedFiles.push(assetsRoot);
 
+      this.restoreTreeState(updatedFiles);
       this.files = updatedFiles;
     } catch (e) {
       console.error('Error updating sidebar files:', e);
