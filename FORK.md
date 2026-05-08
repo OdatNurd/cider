@@ -92,3 +92,8 @@ URL to be injected in for any matches.
   As such, it was possible to accidentally pan while trying to look at a card,
   which is problematic if you have a complex layout since it may disrupt disrupt
   what you can see.
+
+### Enhancements
+
+- Middle-click on a stack now zooms the stack, so that it is easier to read a
+  card from the top of a stack without having to draw it first.

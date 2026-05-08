@@ -1082,6 +1082,22 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     }
   }
 
+  onStackMouseDown(event: MouseEvent, stack: CardStack) {
+    if (event.button == 1) {
+      if (stack.cards.length > 0) {
+        this.calculateMagnifiedPosition(event, stack);
+        this.magnifiedCard = stack.cards[stack.cards.length - 1];
+      }
+      event.preventDefault(); // Prevent default middle click scroll
+    }
+  }
+
+  onStackMouseUp(event: MouseEvent, stack: CardStack) {
+    if (event.button == 1) {
+      this.magnifiedCard = undefined;
+    }
+  }
+
   onComponentMouseDown(event: MouseEvent, component: GameComponent) {
     if (event.button == 1) {
       event.stopPropagation();
@@ -1225,12 +1241,12 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   }
 
 
-  private calculateMagnifiedPosition(event: MouseEvent, card: GameCard) {
+  private calculateMagnifiedPosition(event: MouseEvent, item: Positionable) {
     let width = 300; // Fallback
     let height = 420; // Fallback
 
     // Attempt to calculate actual target dimensions based on the source element
-    const el = document.getElementById(card.uniqueId);
+    const el = document.getElementById((item as any).uniqueId);
     if (el) {
       const rect = el.getBoundingClientRect();
       // Calculate base dimensions (unscaled)

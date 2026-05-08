@@ -15,6 +15,7 @@
       @for (stack of stacks; track stack.uniqueId) {
       @if (stack.cards) {
       <div class="card-stack game-card" [class.empty]="stack.cards.length === 0" [id]="stack.uniqueId"
+        (mousedown)="onStackMouseDown($event, stack)" (mouseup)="onStackMouseUp($event, stack)"
         (contextmenu)="onStackContextMenu($event, cm, stack)" (cdkDragStarted)="onDragStarted($event, stacks, stack)"
         (cdkDragEnded)="onDragEnded($event, stacks, stack)" [cdkDragFreeDragPosition]="getScaledPos(stack)"
         [cdkDragScale]="dragScale" [cdkDragConstrainPosition]="handleDragPosition" [cdkDragDisabled]="isShiftPressed"
