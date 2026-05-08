@@ -115,3 +115,13 @@ URL to be injected in for any matches.
 
 - Middle-click on a stack now zooms the stack, so that it is easier to read a
   card from the top of a stack without having to draw it first.
+
+- The simulator now tracks whether or not the mouse enters or leaves an item on
+  the field (card, stack, etc) so that it is possible to carry out actions on
+  the currently "selected" item.
+
+  As a part of this, we must be careful when allowing drops because the original
+  code assumes that if there is a hovered item, it is a stack. Now we must be
+  careful to check that a drop target is a stack, or else dropping a card onto
+  another card or component will erase it, since it's removed from the field but
+  not added anywhere else.

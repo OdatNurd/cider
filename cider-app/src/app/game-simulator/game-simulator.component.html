@@ -16,6 +16,7 @@
       @if (stack.cards) {
       <div class="card-stack game-card" [class.empty]="stack.cards.length === 0" [id]="stack.uniqueId"
         (mousedown)="onStackMouseDown($event, stack)" (mouseup)="onStackMouseUp($event, stack)"
+        (mouseenter)="onMouseEntered($event, stack)" (mouseleave)="onMouseExited($event, stack)"
         (contextmenu)="onStackContextMenu($event, cm, stack)" (cdkDragStarted)="onDragStarted($event, stacks, stack)"
         (cdkDragEnded)="onDragEnded($event, stacks, stack)" [cdkDragFreeDragPosition]="getScaledPos(stack)"
         [cdkDragScale]="dragScale" [cdkDragConstrainPosition]="handleDragPosition" [cdkDragDisabled]="isShiftPressed"
@@ -73,6 +74,7 @@
       @for (card of field.cards; track card) {
       @if (card.card.frontCardTemplateId) {
       <div class="field-card game-card" (contextmenu)="onCardContextMenu($event, cm, card)" [id]="card.uniqueId"
+        (mouseenter)="onMouseEntered($event, card)" (mouseleave)="onMouseExited($event, card)"
         (mousedown)="onCardMouseDown($event, card)" (mouseup)="onCardMouseUp($event, card)" [cdkDragData]="card"
         (cdkDragStarted)="onCardDragStarted($event, field.cards, card)"
         (cdkDragEnded)="onCardDragEnded($event, field.cards, card)" [cdkDragFreeDragPosition]="getScaledPos(card)"
@@ -91,6 +93,7 @@
 
       @for (component of components; track component) {
         <div class="game-component" (contextmenu)="onComponentContextMenu($event, cm, component)"
+        (mouseenter)="onMouseEntered($event, component)" (mouseleave)="onMouseExited($event, component)"
         (mousedown)="onComponentMouseDown($event, component)"
         (auxclick)="onComponentAuxClick($event, component)"
         [cdkDragData]="component" [id]="component.uniqueId"

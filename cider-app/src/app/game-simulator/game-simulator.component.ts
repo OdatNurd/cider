@@ -1048,10 +1048,15 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     // Use consistent world-space clamping (no manual normalization needed with cdkDragScale)
     card.pos = this.clampPosition({ x: pos.x, y: pos.y }, width, height, 0);
     console.log(`Drag Ended [Card]: ${card.uniqueId} | Pos:`, card.pos, `| Zoom: ${this.simulatorZoom}`);
-    if (this.hoveredItem) {
-      const index = cards.indexOf(card);
-      cards.splice(index, 1);
-      (this.hoveredItem as any).cards.push(card);
+    if (this.hoveredItem && this.hoveredItem !== card) {
+      const targetItem = this.hoveredItem as any;
+
+      // Only push if the target is actually a Stack
+      if (targetItem.cards) {
+        const index = cards.indexOf(card);
+        cards.splice(index, 1);
+        targetItem.cards.push(card);
+      }
 
       // Crucial: Clear hoveredItem to prevent ghost merging on future drops!
       this.hoveredItem = undefined;
