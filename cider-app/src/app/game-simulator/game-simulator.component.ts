@@ -289,7 +289,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     // Left click only (button 0)
     if (event.button === 0) {
-      const faceUp = !event.shiftKey;
+      const faceUp = !event.shiftKey && !event.ctrlKey;
       this.drawCard(stack, faceUp);
     }
   }
@@ -552,6 +552,24 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     }, 400);
   }
 
+  public rollDie(component: GameComponent) {
+    if (component.rolling) return;
+    component.rolling = true;
+    setTimeout(() => {
+      component.face = MathUtils.randomInt(1, 6);
+      component.rolling = false;
+    }, 600);
+  }
+
+  public flipCoin(component: GameComponent) {
+    if (component.rolling) return;
+    component.rolling = true;
+    setTimeout(() => {
+      component.faceUp = Math.random() < 0.5;
+      component.rolling = false;
+    }, 600);
+  }
+
   public onCardContextMenu(event: MouseEvent, cm: ContextMenu, card: GameCard) {
     cm.hide();
     event.preventDefault();
@@ -677,14 +695,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
                   const componentState: GameComponent | undefined =
                     event.item?.state as GameComponent;
                   if (componentState) {
-                    componentState.rolling = true;
-                    setTimeout(() => {
-                      // Also use flipComponent if desired, but rolling is distinct.
-                      // Let's keep rolling as is for random, but if we want 3D flip for strict flip:
-                      // Random flip implies "tossing". 
-                      componentState.faceUp = Math.random() < 0.5;
-                      componentState.rolling = false;
-                    }, 600);
+                    this.flipCoin(componentState);
                   }
                 }
               },
@@ -763,11 +774,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
                     const componentState: GameComponent | undefined =
                       event.item?.state as GameComponent;
                     if (componentState) {
-                      componentState.rolling = true;
-                      setTimeout(() => {
-                        componentState.face = MathUtils.randomInt(1, 6);
-                        componentState.rolling = false;
-                      }, 600);
+                      this.rollDie(componentState);
                     }
                   }
                 },
@@ -1127,17 +1134,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       this.gameStateService.bringToFront(component);
 
       if (component.type === 'd6') {
-        component.rolling = true;
-        setTimeout(() => {
-          component.face = MathUtils.randomInt(1, 6);
-          component.rolling = false;
-        }, 600);
+        this.rollDie(component);
       } else if (component.type === 'coin') {
-        component.rolling = true;
-        setTimeout(() => {
-          component.faceUp = Math.random() < 0.5;
-          component.rolling = false;
-        }, 600);
+        this.flipCoin(component);
       } else if (component.type === 'cube' || component.type === 'pawn') {
         this.flipComponent(component);
       }
@@ -1438,6 +1437,62 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   onWindowKeyDown(event: KeyboardEvent) {
     if (event.key === 'Shift') {
       this.isShiftPressed = true;
+    }
+
+    // Do not capture keyboard shortcuts if the user is typing in an input field (like a search box or rename dialog)
+    const activeEl = document.activeElement;
+    const isInputFocused = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+    if (!isInputFocused && this.hoveredItem) {
+      const item = this.hoveredItem as any;
+      const isCard = item.card !== undefined && item.uniqueId !== undefined;
+      const isStack = item.cards !== undefined && item.uniqueId !== undefined;
+      const isComponent = item.type !== undefined && item.className !== undefined;
+
+      switch (event.key.toLowerCase()) {
+        case ' ':
+          if (isStack) {
+            event.preventDefault();
+            this.drawCard(item as CardStack, !this.isCtrlPressed && !this.isShiftPressed);
+          }
+          break;
+        case 'f':
+          if (isCard) {
+            this.flipCard(item as GameCard);
+          } else if (isStack) {
+            this.flipStack(item as CardStack);
+          } else if (isComponent) {
+            const comp = item as GameComponent;
+            this.gameStateService.bringToFront(comp);
+            if (comp.type === 'd6') {
+              this.rollDie(comp);
+            } else if (comp.type === 'coin') {
+              this.flipCoin(comp);
+            } else if (comp.type === 'cube' || comp.type === 'pawn') {
+              this.flipComponent(comp);
+            }
+          }
+          break;
+        case 'd':
+          if (isCard) {
+            this.rotateCard(item as GameCard, -90);
+          } else if (isStack) {
+            this.rotateStack(item as CardStack, -90);
+          }
+          break;
+        case 'g':
+          if (isCard) {
+            this.rotateCard(item as GameCard, 90);
+          } else if (isStack) {
+            this.rotateStack(item as CardStack, 90);
+          }
+          break;
+        case 'q':
+          if (isCard && this.field.cards.includes(item as GameCard)) {
+            this.discardCard(this.field.cards, item as GameCard);
+          }
+          break;
+      }
     }
   }
 

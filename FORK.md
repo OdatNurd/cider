@@ -125,3 +125,18 @@ URL to be injected in for any matches.
   careful to check that a drop target is a stack, or else dropping a card onto
   another card or component will erase it, since it's removed from the field but
   not added anywhere else.
+
+- With the simulator able to track the component currently under the mouse, it
+  is possible to include key bindings to flip/rotate/discard the item under the
+  cursor, rather than having to always do it from the menu. Additionally it is
+  now possible to draw cards via a key if a stack is hovered.
+
+  This is implemented to apply the controls to everything that can be controlled
+  via a context menu in this manner (so you cannot "discard" a token, but you
+  can discard a card).
+
+  Note that as defined the `shift` key, in combination with the button that
+  appears when you hover over a card, would draw face down; this has been
+  augmented to also work with `ctrl` as well.
+
+  The shortcut popup is also augmented to show these keys.
