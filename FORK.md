@@ -84,3 +84,11 @@ URL to be injected in for any matches.
   For the sake of repeatability and consistency, settle on a single layout; the
   one selected is the one that looked the most visually pleasing to my eye,
   though this could certainly be done better.
+
+- The middle mouse button allows you to zoom in on the hovered card so you can
+  see it better. However the middle button is also a shortcut to panning in the
+  simulator area.
+
+  As such, it was possible to accidentally pan while trying to look at a card,
+  which is problematic if you have a complex layout since it may disrupt disrupt
+  what you can see.

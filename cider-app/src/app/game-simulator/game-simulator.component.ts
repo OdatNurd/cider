@@ -1347,6 +1347,11 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   }
 
   public onSimulatorMouseDown(event: MouseEvent) {
+    // Prevent panning if we are currently magnifying a card
+    if (this.magnifiedCard) {
+      return;
+    }
+
     // Shift + LMB or MMB
     if ((event.shiftKey && event.button === 0) || event.button === 1) {
       this.isPanning = true;
