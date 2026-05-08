@@ -17,6 +17,7 @@ export interface CardStack extends Positionable {
     shuffling?: boolean;
     flipping?: boolean;
     rotation?: number;
+    originDeckId?: string;
 }
 
 export interface GameCard extends Positionable {
@@ -29,6 +30,7 @@ export interface GameCard extends Positionable {
     flipping?: boolean;
     rotation?: number;
     holographic?: boolean;
+    originDeckId?: string;
 }
 
 export interface GameComponent extends Positionable {

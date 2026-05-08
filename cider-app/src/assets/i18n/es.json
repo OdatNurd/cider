@@ -149,6 +149,7 @@
         "draw-card": "Robar carta",
         "draw-card-facedown": "Robar carta boca abajo",
         "draw-specific-card": "Robar carta específica",
+        "recall-deck": "Recuperar todas las cartas",
         "hidden-card": "Carta boca abajo",
         "reveal-hidden": "Revelar cartas ocultas",
         "shuffle-stack": "Barajar mazo",

@@ -149,6 +149,7 @@
         "draw-card": "Kaart trekken",
         "draw-card-facedown": "Kaart gesloten trekken",
         "draw-specific-card": "Specifieke kaart trekken",
+        "recall-deck": "Alle kaarten terugroepen",
         "hidden-card": "Gedekte kaart",
         "reveal-hidden": "Verborgen kaarten onthullen",
         "shuffle-stack": "Stapel schudden",

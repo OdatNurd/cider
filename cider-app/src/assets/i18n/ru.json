@@ -149,6 +149,7 @@
         "draw-card": "Взять карту",
         "draw-card-facedown": "Взять карту рубашкой вниз",
         "draw-specific-card": "Взять конкретную карту",
+        "recall-deck": "Собрать все карты",
         "hidden-card": "Перевернутая карта",
         "reveal-hidden": "Показать скрытые карты",
         "shuffle-stack": "Перетасовать колоду",

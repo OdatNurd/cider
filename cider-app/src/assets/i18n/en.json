@@ -170,6 +170,7 @@
         "rename-stack": "Rename Stack",
         "draw-card-facedown": "Draw Card Facedown",
         "draw-specific-card": "Draw Specific Card",
+        "recall-deck": "Recall All Cards",
         "hidden-card": "Face Down Card",
         "reveal-hidden": "Reveal Hidden Cards",
         "shuffle-stack": "Shuffle Stack",

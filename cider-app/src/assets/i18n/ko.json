@@ -149,6 +149,7 @@
         "draw-card": "카드 뽑기",
         "draw-card-facedown": "카드 뒷면으로 뽑기",
         "draw-specific-card": "특정 카드 뽑기",
+        "recall-deck": "모든 카드 회수",
         "hidden-card": "뒤집힌 카드",
         "reveal-hidden": "숨겨진 카드 공개",
         "shuffle-stack": "덱 섞기",

@@ -469,6 +469,56 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     }
   }
 
+  public recallDeck(targetStack: CardStack) {
+    if (!targetStack.originDeckId) return;
+
+    const collectedCards: GameCard[] = [];
+
+    // Scan the field for all cards that are marked with the ID of the deck
+    // and pull them back.
+    for (let i = this.field.cards.length - 1; i >= 0; i--) {
+        const card = this.field.cards[i];
+        if (card.originDeckId === targetStack.originDeckId) {
+            collectedCards.push(card);
+            this.field.cards.splice(i, 1);
+        }
+    }
+
+    // Now scan all of the other stacks that are known and pull them out of
+    // there as well.
+    for (let i = this.stacks.length - 1; i >= 0; i--) {
+        const stack = this.stacks[i];
+        if (stack === targetStack) continue;
+
+        for (let j = stack.cards.length - 1; j >= 0; j--) {
+            const card = stack.cards[j];
+            if (card.originDeckId === targetStack.originDeckId) {
+                collectedCards.push(card);
+                stack.cards.splice(j, 1);
+            }
+        }
+
+        // If this stack is now empty and it's transient, then we can delete 
+        // that stack as well, since it is no longer needed.
+        if (stack.cards.length === 0 && stack.transient) {
+            this.stacks.splice(i, 1);
+        }
+    }
+
+    // Put all of the collected cards back into the target stack, and shuffle
+    // it.
+    if (collectedCards.length > 0) {
+        targetStack.cards.push(...collectedCards);
+        
+        // Trigger the visual shuffle animation
+        targetStack.shuffling = true;
+        setTimeout(() => {
+            this.shuffleCards(targetStack);
+            targetStack.shuffling = false;
+        }, 600);
+    }
+  }
+
   public async onStackContextMenu(event: MouseEvent, cm: ContextMenu, stack: CardStack) {
     cm.hide();
     event.preventDefault();
@@ -527,6 +577,12 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         icon: 'pi pi-id-card',
         disabled: stack.cards.length === 0,
         command: () => this.openDrawSpecificCardDialog(stack)
+      },
+      {
+        label: this.translate.instant('simulator.recall-deck'),
+        icon: 'pi pi-inbox',
+        visible: !!stack.originDeckId,
+        command: () => this.recallDeck(stack)
       },
       {
         label: this.translate.instant('simulator.shuffle-stack'),

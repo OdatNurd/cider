@@ -149,6 +149,7 @@
         "draw-card": "Dobierz kartę",
         "draw-card-facedown": "Dobierz kartę zakrytą",
         "draw-specific-card": "Dobierz określoną kartę",
+        "recall-deck": "Przywołaj wszystkie karty",
         "hidden-card": "Zakryta karta",
         "reveal-hidden": "Odkryj ukryte karty",
         "shuffle-stack": "Przetasuj stos",

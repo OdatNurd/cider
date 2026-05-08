@@ -149,6 +149,7 @@
         "draw-card": "Piocher une carte",
         "draw-card-facedown": "Piocher une carte face cachée",
         "draw-specific-card": "Piocher une carte spécifique",
+        "recall-deck": "Rappeler toutes les cartes",
         "hidden-card": "Carte face cachée",
         "reveal-hidden": "Révéler les cartes cachées",
         "shuffle-stack": "Mélanger la pile",

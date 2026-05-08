@@ -149,6 +149,7 @@
         "draw-card": "Kart Çek",
         "draw-card-facedown": "Kapalı Kart Çek",
         "draw-specific-card": "Belirli Kartı Çek",
+        "recall-deck": "Tüm Kartları Topla",
         "hidden-card": "Kapalı Kart",
         "reveal-hidden": "Gizli Kartları Göster",
         "shuffle-stack": "Yığını Karıştır",

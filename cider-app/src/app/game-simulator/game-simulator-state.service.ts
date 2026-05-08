@@ -45,6 +45,9 @@ export class GameSimulatorStateService {
         for (const deck of decks) {
             const cards = await this.cardsService.getAll({ deckId: deck.id });
             const expandedCards: GameCard[] = [];
+            
+            // Generate the unique lineage identity for this base deck
+            const originDeckId = StringUtils.generateRandomString();
 
             cards.forEach(card => {
                 for (let i = 0; i < card.count; i++) {
@@ -52,7 +55,8 @@ export class GameSimulatorStateService {
                         uniqueId: StringUtils.generateRandomString(),
                         card: card,
                         faceUp: false,
-                        pos: { x: 0, y: 0 }
+                        pos: { x: 0, y: 0 },
+                        originDeckId: originDeckId
                     } as GameCard);
                 }
             });
@@ -72,7 +76,8 @@ export class GameSimulatorStateService {
                 pos: dropPos,
                 deletable: true,
                 transient: false,
-                rotation: 0
+                rotation: 0,
+                originDeckId: originDeckId
             });
 
             deckIndex++;

@@ -194,3 +194,14 @@ URL to be injected in for any matches.
   This allows for the dialog to be used to draw any card or to introspect the
   content of a stack without revealing any information that you might not want
   revealed.
+
+- During game setup, when decks are created they are given a unique identifier
+  that marks them as the origin of specific cards, and all cards added to that
+  deck during setup have this stamped into them as well.
+
+  This allows for a new command that is available only on decks that allows for
+  pulling all of the cards that they originally started with back to them from
+  whatever other stacks they might be in (other decks, transient stacks, the
+  discard, etc).
+
+  This makes some game actions easier to manage.
