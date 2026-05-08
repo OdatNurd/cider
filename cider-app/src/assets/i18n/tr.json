@@ -150,6 +150,7 @@
         "draw-card-facedown": "Kapalı Kart Çek",
         "draw-specific-card": "Belirli Kartı Çek",
         "shuffle-stack": "Yığını Karıştır",
+        "mix-stack": "Karıştır (Yönü Koru)",
         "flip-stack": "Yığını Ters Çevir",
         "split-in-half": "Yarıya Böl",
         "split-by-attribute": "Özelliğe Göre Böl",

@@ -150,6 +150,7 @@
         "draw-card-facedown": "Pesca una carta coperta",
         "draw-specific-card": "Pesca una carta specifica",
         "shuffle-stack": "Mescola il mazzo",
+        "mix-stack": "Mescola (Mantieni orientamento)",
         "flip-stack": "Gira il mazzo",
         "split-in-half": "Dividi a metà",
         "split-by-attribute": "Dividi per attributo",

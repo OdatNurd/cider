@@ -150,6 +150,7 @@
         "draw-card-facedown": "裏向きでカードを引く",
         "draw-specific-card": "特定のカードを引く",
         "shuffle-stack": "山札をシャッフル",
+        "mix-stack": "混ぜる（向きを維持）",
         "flip-stack": "山札をひっくり返す",
         "split-in-half": "半分に分ける",
         "split-by-attribute": "属性ごとに分ける",

@@ -201,13 +201,18 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   // resetGame is now handled by GameSimulatorStateService
 
 
-  public shuffleCards(cards: GameCard[]) {
+  public mixCards(cards: GameCard[]) {
     for (let i = cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [cards[i], cards[j]] = [cards[j], cards[i]];
     }
   }
 
+  public shuffleCards(stack: CardStack) {
+    // Mix the cards, then conform them all to the default pile identity.
+    this.mixCards(stack.cards);
+    stack.cards.forEach(card => card.faceUp = stack.faceUp);
+  }
 
 
   public rotateStack(stack: CardStack, angle: number) {
@@ -228,6 +233,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     stack.flipping = true;
     setTimeout(() => {
       stack.cards = stack.cards.reverse();
+      // Keep internal cards synced with the physical flip, and then also flip
+      // the default stack identity.
+      stack.cards.forEach(c => c.faceUp = !c.faceUp);
       stack.faceUp = !stack.faceUp;
     }, 200);
 
@@ -279,7 +287,6 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
           // Match the remaining card to the exact visual state of the stack container
           lastCard.pos = { x: stack.pos.x, y: stack.pos.y };
           lastCard.rotation = stack.rotation || 0;
-          lastCard.faceUp = stack.faceUp;
 
           this.gameStateService.bringToFront(lastCard);
           this.field.cards.push(lastCard);
@@ -366,7 +373,6 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         const lastCard = stack.cards.pop()!;
         lastCard.pos = { x: stack.pos.x, y: stack.pos.y };
         lastCard.rotation = stack.rotation || 0;
-        lastCard.faceUp = stack.faceUp;
 
         this.gameStateService.bringToFront(lastCard);
         this.field.cards.push(lastCard);
@@ -521,7 +527,19 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         command: (event: any) => {
           stack.shuffling = true;
           setTimeout(() => {
-            this.shuffleCards(stack.cards);
+            this.shuffleCards(stack);
+            stack.shuffling = false;
+          }, 600);
+        },
+        disabled: stack.cards.length < 2
+      },
+      {
+        label: this.translate.instant('simulator.mix-stack'),
+        icon: 'pi pi-sort-alt',
+        command: (event: any) => {
+          stack.shuffling = true;
+          setTimeout(() => {
+            this.mixCards(stack.cards);
             stack.shuffling = false;
           }, 600);
         },
@@ -940,7 +958,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       uniqueId: StringUtils.generateRandomString(),
       name: stack.name + ' copy',
       cards: cards,
-      faceUp: false,
+      faceUp: stack.faceUp,
       pos: {
         x: stack.pos.x + 50 + (Math.random() * 20 - 10),
         y: stack.pos.y + 50 + (Math.random() * 20 - 10)
@@ -964,7 +982,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         uniqueId: StringUtils.generateRandomString(),
         name: stack.name + ' ' + displayValue,
         cards: stack.cards.filter((card) => card.card[attribute.field] === value),
-        faceUp: false,
+        faceUp: stack.faceUp,
         pos: {
           x: stack.pos.x + (Math.random() * 100 - 50),
           y: stack.pos.y + (Math.random() * 100 - 50)

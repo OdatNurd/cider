@@ -157,8 +157,24 @@ URL to be injected in for any matches.
   When a new stack is created due to an operation on an existing stack, the new
   stack inherits the transient state of its parent.
 
-  This currently has a display issue because stacks are hard coded to display in
-  a specific way irrespective of their content.
+- Handling of stacks is augmented to better visually track their state. The
+  faceUp state of a stack is now taken as its "identity" for a natural state.
+  During deck building, all cards put into a stack are forced into the state
+  that it currently has.
+
+  Rendering of a stack is now based on the properties of its top card rather
+  than (for example) always showing a card back when the stack is face down.
+
+  This allows for more natural stack management; putting a faceUp card into a
+  stack that identifies as face down renders the stack as you having put the
+  card on top, thus visualizing it as faceUp until that card is drawn.
+
+  When flipping a stack, the stack flips as does the state of every card within
+  it, so that rendering remains consistent.
+
+  As a result of this new behaviour, the `shuffle` command now conforms all
+  cards to the current stack identity; a new `mix` command has been added which
+  does a shuffle but leaves the cards in their current state.
 
 - A natural behaviour when playing with cards is the idea of stacking arbitrary
   cards together, such as putting one card on top of another, or tucked under,

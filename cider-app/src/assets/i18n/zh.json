@@ -150,6 +150,7 @@
         "draw-card-facedown": "抽背面卡",
         "draw-specific-card": "抽特定卡",
         "shuffle-stack": "洗牌堆",
+        "mix-stack": "混合 (保持朝向)",
         "flip-stack": "翻转堆",
         "split-in-half": "对半分",
         "split-by-attribute": "按属性分",

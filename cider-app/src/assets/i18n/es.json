@@ -150,6 +150,7 @@
         "draw-card-facedown": "Robar carta boca abajo",
         "draw-specific-card": "Robar carta específica",
         "shuffle-stack": "Barajar mazo",
+        "mix-stack": "Mezclar (Mantener orientación)",
         "flip-stack": "Voltear mazo",
         "split-in-half": "Dividir a la mitad",
         "split-by-attribute": "Dividir por atributo",

@@ -171,6 +171,7 @@
         "draw-card-facedown": "Draw Card Facedown",
         "draw-specific-card": "Draw Specific Card",
         "shuffle-stack": "Shuffle Stack",
+        "mix-stack": "Mix (Keep Facing)",
         "flip-stack": "Flip Stack",
         "rotate-left": "Rotate Left",
         "rotate-right": "Rotate Right",

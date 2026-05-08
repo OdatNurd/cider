@@ -150,6 +150,7 @@
         "draw-card-facedown": "Dobierz kartę zakrytą",
         "draw-specific-card": "Dobierz określoną kartę",
         "shuffle-stack": "Przetasuj stos",
+        "mix-stack": "Mieszaj (Zachowaj ułożenie)",
         "flip-stack": "Odwróć stos",
         "split-in-half": "Podziel na pół",
         "split-by-attribute": "Podziel według atrybutu",

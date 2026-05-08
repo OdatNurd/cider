@@ -150,6 +150,7 @@
         "draw-card-facedown": "Kaart gesloten trekken",
         "draw-specific-card": "Specifieke kaart trekken",
         "shuffle-stack": "Stapel schudden",
+        "mix-stack": "Mengen (Behoud oriëntatie)",
         "flip-stack": "Stapel omdraaien",
         "split-in-half": "In tweeën splitsen",
         "split-by-attribute": "Splitsen op eigenschap",

@@ -150,6 +150,7 @@
         "draw-card-facedown": "Karte verdeckt ziehen",
         "draw-specific-card": "Bestimmte Karte ziehen",
         "shuffle-stack": "Stapel mischen",
+        "mix-stack": "Mischen (Ausrichtung beibehalten)",
         "flip-stack": "Stapel umdrehen",
         "split-in-half": "Halbieren",
         "split-by-attribute": "Nach Attribut teilen",

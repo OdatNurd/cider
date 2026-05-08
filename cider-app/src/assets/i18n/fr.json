@@ -150,6 +150,7 @@
         "draw-card-facedown": "Piocher une carte face cachée",
         "draw-specific-card": "Piocher une carte spécifique",
         "shuffle-stack": "Mélanger la pile",
+        "mix-stack": "Mélanger (Garder l'orientation)",
         "flip-stack": "Retourner la pile",
         "split-in-half": "Diviser en deux",
         "split-by-attribute": "Diviser par attribut",

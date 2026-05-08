@@ -150,6 +150,7 @@
         "draw-card-facedown": "Comprar carta virada para baixo",
         "draw-specific-card": "Comprar carta específica",
         "shuffle-stack": "Embaralhar pilha",
+        "mix-stack": "Misturar (Manter orientação)",
         "flip-stack": "Virar pilha",
         "split-in-half": "Dividir ao meio",
         "split-by-attribute": "Dividir por atributo",

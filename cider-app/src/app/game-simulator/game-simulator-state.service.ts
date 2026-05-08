@@ -51,7 +51,7 @@ export class GameSimulatorStateService {
                     expandedCards.push({
                         uniqueId: StringUtils.generateRandomString(),
                         card: card,
-                        faceUp: true,
+                        faceUp: false,
                         pos: { x: 0, y: 0 }
                     } as GameCard);
                 }
@@ -192,7 +192,7 @@ export class GameSimulatorStateService {
                 newGameCards.push({
                     uniqueId: StringUtils.generateRandomString(),
                     card: card,
-                    faceUp: true,
+                    faceUp: false,
                     pos: { x: 0, y: 0 }
                 });
             }

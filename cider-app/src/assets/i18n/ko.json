@@ -150,6 +150,7 @@
         "draw-card-facedown": "카드 뒷면으로 뽑기",
         "draw-specific-card": "특정 카드 뽑기",
         "shuffle-stack": "덱 섞기",
+        "mix-stack": "섞기 (방향 유지)",
         "flip-stack": "덱 뒤집기",
         "split-in-half": "반으로 나누기",
         "split-by-attribute": "속성별로 나누기",
