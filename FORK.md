@@ -93,6 +93,14 @@ URL to be injected in for any matches.
   which is problematic if you have a complex layout since it may disrupt disrupt
   what you can see.
 
+- The boolean flag that indicates that a non-card/non-stack component (e.g. a
+  pawn, a die, etc) is being dragged existed but was never actually updated from
+  its initial value.
+
+- Stop context menus from opening when you press the right mouse button while a
+  drag operation is in progress. While technically harmless it is visually
+  distracting.
+
 ### Enhancements
 
 - Middle-click on a stack now zooms the stack, so that it is easier to read a

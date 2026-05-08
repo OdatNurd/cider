@@ -426,6 +426,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     cm.hide();
     event.preventDefault();
     event.stopPropagation();
+    if (this.draggingCard || this.draggingStack || this.draggingComponent) {
+      return;
+    }    
     const deckIds = stack.cards.map((card) => card.card.deckId)
       .filter((value, index, array) => array.indexOf(value) === index);
     const optionAttributes = await Promise.all(deckIds.map((deckId) => this.cardsService.getFieldsUnfiltered({ deckId: deckId })))
@@ -555,6 +558,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     cm.hide();
     event.preventDefault();
     event.stopPropagation();
+    if (this.draggingCard || this.draggingStack || this.draggingComponent) {
+      return;
+    }
     this.contextMenuItems = [
       {
         label: this.translate.instant('simulator.flip-card'),
@@ -597,6 +603,9 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     cm.hide();
     event.preventDefault();
     event.stopPropagation();
+    if (this.draggingCard || this.draggingStack || this.draggingComponent) {
+      return;
+    }    
     this.contextMenuItems = [
       ...component.contextMenu,
       {
@@ -632,7 +641,10 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
   public onFieldContextMenu(event: MouseEvent, cm: ContextMenu) {
     cm.hide();
     event.preventDefault();
-
+    event.stopPropagation();    
+    if (this.draggingCard || this.draggingStack || this.draggingComponent) {
+      return;
+    }
     let boundaryLeft = 0;
     let boundaryTop = 0;
     if (this.gameBoundary && this.gameBoundary.nativeElement) {
@@ -949,9 +961,11 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     }
     this.hoveredItem = undefined;
 
-    // Check if we are dragging a stack
+    // Check if we are dragging a stack or a component
     if (items === this.stacks) {
       this.draggingStack = true;
+    } else if (items === this.components) {
+      this.draggingComponent = true;
     }
   }
 
@@ -1017,7 +1031,12 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       this.hoveredItem = undefined;
     }
 
-    this.draggingStack = false;
+    // Clear the drag states depending on what array was passed
+    if (items === this.stacks) {
+      this.draggingStack = false;
+    } else if (items === this.components) {
+      this.draggingComponent = false;
+    }
   }
 
   onCardDragEnded(event: CdkDragEnd<any>, cards: GameCard[], card: GameCard) {
