@@ -27,3 +27,17 @@ not available.
 In addition, as a Slackware user `deb` files are not as useful (although they
 can be turned into packages), so the Electron builder for Linux was extended to
 also generate a Tarball.
+
+## Documents
+
+Something that caught me by surprise since it is not mentioned in the
+documentation and a bit hard to find is that it is possible to include Markdown
+files in the project and view them in a rendered state.
+
+An interesting feature experiment here is augmenting this so that the
+`{{assett}}` handlebar is supported here, specifically to allow you to get at
+the URL for images (though it would work for everything). This would allow you
+to inject your custom card icons into your notes, for example.
+
+Here we add that by a little bit of regex trickery, allowing the loaded asset
+URL to be injected in for any matches.

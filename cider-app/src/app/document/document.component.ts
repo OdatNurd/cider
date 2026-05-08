@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Document } from '../data-services/types/document.type';
 import { DocumentsService } from '../data-services/services/documents.service';
+import { AssetsService } from '../data-services/services/assets.service';
 import { debounceTime, Subject, Subscription } from 'rxjs';
 import { ThemeService } from '../data-services/theme/theme.service';
 
@@ -26,13 +27,17 @@ export class DocumentComponent implements OnInit, OnDestroy {
   } as Document;
   disablePanels: boolean = false;
   documentChanges: Subject<boolean>;
+  assetUrls: any = {};
+
   private editor: any;
   private monaco: any;
   private themeSubscription: Subscription | null = null;
+  private assetsSubscription: Subscription | null = null;
 
   constructor(private route: ActivatedRoute,
     private themeService: ThemeService,
     private documentsService: DocumentsService,
+    private assetsService: AssetsService
   ) {
     this.route.paramMap.subscribe(params => {
       const documentIdString = params.get('documentId') || '';
@@ -60,6 +65,27 @@ export class DocumentComponent implements OnInit, OnDestroy {
     this.mermaidOptions = {
       theme: isDark ? 'dark' : 'default',
     };
+  }
+
+  get parsedMarkdownContent(): string {
+    if (!this.textDocument || !this.textDocument.content) return '';
+
+    return this.textDocument.content.replace(
+      /\{\{\s*assets\.([\w.-]+)\s*\}\}/g,
+      (match, assetPath) => {
+        const parts = assetPath.split('.');
+        let current = this.assetUrls;
+
+        for (const part of parts) {
+          if (current && current[part]) {
+            current = current[part];
+          } else {
+            return match;
+          }
+        }
+        return current as string;
+      }
+    );
   }
 
   protected editorInitialized(editor: any) {
@@ -100,11 +126,18 @@ export class DocumentComponent implements OnInit, OnDestroy {
         this.monaco.editor.setTheme(monacoTheme);
       }
     });
+
+    this.assetsSubscription = this.assetsService.getAssetUrls().subscribe(assetUrls => {
+      this.assetUrls = assetUrls;
+    });
   }
 
   ngOnDestroy(): void {
     if (this.themeSubscription) {
       this.themeSubscription.unsubscribe();
+    }
+    if (this.assetsSubscription) {
+      this.assetsSubscription.unsubscribe();
     }
   }
 
