@@ -101,6 +101,16 @@ URL to be injected in for any matches.
   drag operation is in progress. While technically harmless it is visually
   distracting.
 
+- The code for opening a context menu was triggering errors in the console
+  because it was synthesizing an Event object to pass to the underlying library,
+  but that library tries to suppress the event by invoking a method on it that
+  the stub object does not contain.
+
+  This is harmless, but adds annoying spam to the console in the dev tools. So
+  this has been redacted in favor of just passing the event directly. I'm not
+  sure if there was some other reason for doing it this way that this may be
+  subverting.
+
 ### Enhancements
 
 - Middle-click on a stack now zooms the stack, so that it is easier to read a

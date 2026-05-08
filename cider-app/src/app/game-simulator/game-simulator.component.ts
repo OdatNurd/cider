@@ -536,9 +536,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         disabled: !stack.deletable
       },
     ];
-    const x = event.pageX;
-    const y = event.pageY;
-    setTimeout(() => cm.show({ pageX: x, pageY: y } as MouseEvent));
+    setTimeout(() => cm.show(event));
   }
 
   public flipComponent(component: GameComponent) {
@@ -593,9 +591,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         command: () => this.discardCard(this.field.cards, card)
       }
     ];
-    const x = event.pageX;
-    const y = event.pageY;
-    setTimeout(() => cm.show({ pageX: x, pageY: y } as MouseEvent));
+    setTimeout(() => cm.show(event));
   }
 
   public onComponentContextMenu(event: MouseEvent, cm: ContextMenu,
@@ -633,9 +629,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
     this.contextMenuItems.forEach(item => {
       item.state = component;
     })
-    const x = event.pageX;
-    const y = event.pageY;
-    setTimeout(() => cm.show({ pageX: x, pageY: y } as MouseEvent));
+    setTimeout(() => cm.show(event));
   }
 
   public onFieldContextMenu(event: MouseEvent, cm: ContextMenu) {
@@ -869,9 +863,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         command: () => this.showShortcuts(),
       },
     ];
-    const x = event.pageX;
-    const y = event.pageY;
-    setTimeout(() => cm.show({ pageX: x, pageY: y } as MouseEvent));
+    setTimeout(() => cm.show(event));
   }
 
   public createStack(cards: GameCard[], card: GameCard) {
