@@ -38,6 +38,12 @@ function createWindow(): BrowserWindow {
     }
   });
 
+  // When the app is packaged, do not use the main window. It needs to be there
+  // during dev to allow devtool access.
+  if (app.isPackaged) {
+    win.removeMenu();
+  }
+
   if (serve) {
     const debug = require('electron-debug');
     debug();

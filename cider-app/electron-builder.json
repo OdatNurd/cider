@@ -47,6 +47,6 @@
     },
     "linux": {
         "icon": "dist/cider/browser/assets/cider-logo.icns",
-        "target": ["deb"]
+        "target": ["deb", "tar.xz"]
     }
 }

@@ -1,0 +1,29 @@
+# Cider Fork
+
+This branch is a fork of the `main` branch of `cider`, implementing some new
+features and changes into it; largely these are related to the simulator, but
+some application related changes are in place as well.
+
+The intent of this document is to indicate the changes made in each commit to
+both act as a growing document of the changes, with more detail than the commit
+messages can or should contain, and to track what the changes are to make any
+eventual merges less painful.
+
+In this initial fork, the `.gitignore` was updated so that I can keep my
+Sublime Text project file in the folder without being annoyed, as well as
+committing the current package-lock.json file because it looks like it was
+accidentally dropped from the commit on the last release cut.
+
+
+# Features and Changes
+
+## Main Application
+
+The `main.ts` was updated so that as long as the app is running as a compiled
+and bundled Electron application, the menu on the window is removed, but it is
+left in place when running via `npm` since otherwise the internal dev tools are
+not available.
+
+In addition, as a Slackware user `deb` files are not as useful (although they
+can be turned into packages), so the Electron builder for Linux was extended to
+also generate a Tarball.
