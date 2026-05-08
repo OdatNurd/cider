@@ -15,6 +15,7 @@
                 hsl(' + projectUrl.hue2 + ' 50% 50%)) 0% 0% / 250% 250%'
         }">
     <span class="project-label">{{ projectUrl.name }}</span>
+    <i class="pi pi-times remove-project-btn" (click)="removeProject($event, projectUrl)"></i>
     <div class="bubbles-container">
       @for (bubble of projectUrl.bubbles; track bubble) {
       <span class="bubble" [style.left]="bubble.left" [style.width]="bubble.size" [style.height]="bubble.size"

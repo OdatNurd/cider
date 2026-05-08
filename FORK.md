@@ -28,6 +28,21 @@ In addition, as a Slackware user `deb` files are not as useful (although they
 can be turned into packages), so the Electron builder for Linux was extended to
 also generate a Tarball.
 
+## Welcome Screen
+
+While playing with the application and trying things the list of projects on the
+welcome screen started to pile up and there is no good way that I could see that
+this can be cleared without manual intervention or removal of projects that may
+still be desirable top keep around.
+
+So, here the tiles that represent the projects that are known to the system each
+have a close button that can be used to cause the app to forget them without
+removing the files.
+
+This leaves the localStorage for the tree alone; this would get cleaned up when
+the app next starts, but if you re-open a project from the same path it was at
+previously without quitting, its tree will retain its state.
+
 ## Project Tree
 
 The project tree in the sidebar can get a little busy with a lot of assets,

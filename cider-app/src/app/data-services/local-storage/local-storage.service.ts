@@ -88,6 +88,13 @@ export class LocalStorageService {
     this.recentProjectUrls.next(urls);
   }
 
+  public removeRecentProjectUrl(path: string) {
+    let urls = this.getRecentProjectUrlsFromLocalStorage();
+    urls = urls.filter(item => item.path !== path);
+    localStorage.setItem(LocalStorageService.RECENT_PROJECT_URLS, JSON.stringify(urls));
+    this.recentProjectUrls.next(urls);
+  }
+
   private getRecentProjectUrlsFromLocalStorage(): PersistentPath[] {
     const urlsString: string | null = localStorage.getItem(LocalStorageService.RECENT_PROJECT_URLS);
     if (urlsString === null) {

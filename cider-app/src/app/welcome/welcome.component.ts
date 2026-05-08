@@ -157,6 +157,19 @@ export class WelcomeComponent implements OnInit {
       });
   }
 
+  public removeProject(event: Event, projectUrl: any) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.confirmationService.confirm({
+      message: 'Are you sure you want to remove this project from the list? (Your files on disk will not be deleted)',
+      header: 'Remove Project',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.localStorageService.removeRecentProjectUrl(projectUrl.persistentPath.path);
+      }
+    });
+  }
+
   calculateHue(text: string) {
     if (!text) {
       return 255;
