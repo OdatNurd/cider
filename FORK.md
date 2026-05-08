@@ -141,6 +141,25 @@ URL to be injected in for any matches.
 
   The shortcut popup is also augmented to show these keys.
 
+- Stacks have been given a new internal state, `transient`; such a stack acts in
+  all ways as a stack always has, but the transient state allows for marking a
+  stack as one that is intended to be temporary.
+
+  When the last card is taken out of a transient stack, the stack itself is
+  deleted. Alternately, if the second to last card is taken out, then the stack
+  is deleted and replaced by the single card still left within it. This covers
+  the case of odd and even numbered cards in the stack.
+
+  Operations that split stacks apart (by name, by attribute) create transient
+  stacks, allowing you to pull cards out of existing stacks without making a new
+  permanent one.
+
+  When a new stack is created due to an operation on an existing stack, the new
+  stack inherits the transient state of its parent.
+
+  This currently has a display issue because stacks are hard coded to display in
+  a specific way irrespective of their content.
+
 - A natural behaviour when playing with cards is the idea of stacking arbitrary
   cards together, such as putting one card on top of another, or tucked under,
   etc. This is what stacks are, but creating a stack manually to do this is a
@@ -149,4 +168,5 @@ URL to be injected in for any matches.
   Dropping a card onto another single card while holding the `shift` key causes
   the target card to be promoted into a stack directly. This is done with the
   addition of a modifier as otherwise you can't lay cards near each other
-  without stacking them.
+  without stacking them. Stacks created this way are created as `transient` so
+  they go away when you empty them.

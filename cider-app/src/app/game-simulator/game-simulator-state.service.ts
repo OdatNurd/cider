@@ -71,6 +71,7 @@ export class GameSimulatorStateService {
                 faceUp: false,
                 pos: dropPos,
                 deletable: true,
+                transient: false,
                 rotation: 0
             });
 
@@ -85,6 +86,7 @@ export class GameSimulatorStateService {
             faceUp: true,
             pos: { x: 3500, y: -650 },
             deletable: false,
+            transient: false,
         };
         stacks.push(this.discard);
 
@@ -207,6 +209,7 @@ export class GameSimulatorStateService {
             faceUp: false,
             pos: { x: 50, y: 50 }, // Top left
             deletable: true,
+            transient: false,
             rotation: 0
         };
 

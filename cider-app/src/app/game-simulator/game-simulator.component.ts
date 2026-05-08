@@ -270,6 +270,25 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         this.gameStateService.bringToFront(drawnCard);
         this.field.cards.push(drawnCard);
 
+        // If this is a transient stack that has only a single card in it, then
+        // dissolve it back into a single card.
+        if (stack.cards.length === 1 && stack.transient) {
+          // If 1 card remains, pop it out and dissolve the stack container
+          const lastCard = stack.cards.pop()!;
+
+          // Match the remaining card to the exact visual state of the stack container
+          lastCard.pos = { x: stack.pos.x, y: stack.pos.y };
+          lastCard.rotation = stack.rotation || 0;
+          lastCard.faceUp = stack.faceUp;
+
+          this.gameStateService.bringToFront(lastCard);
+          this.field.cards.push(lastCard);
+          this.deleteItem(this.stacks, stack);
+        } else if (stack.cards.length === 0 && stack.transient) {
+          // Fallback in case the user drew the very last card without it dissolving
+          this.deleteItem(this.stacks, stack);
+        }
+
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             drawnCard.drawing = true; // Enable transition
@@ -340,6 +359,21 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       this.gameStateService.bringToFront(drawnCard);
       // Add the card to the field
       this.field.cards.push(drawnCard);
+
+      // If this is a transient stack that has only a single card in it, then
+      // dissolve it back into a single card.
+      if (stack.cards.length === 1 && stack.transient) {
+        const lastCard = stack.cards.pop()!;
+        lastCard.pos = { x: stack.pos.x, y: stack.pos.y };
+        lastCard.rotation = stack.rotation || 0;
+        lastCard.faceUp = stack.faceUp;
+
+        this.gameStateService.bringToFront(lastCard);
+        this.field.cards.push(lastCard);
+        this.deleteItem(this.stacks, stack);
+      } else if (stack.cards.length === 0 && stack.transient) {
+        this.deleteItem(this.stacks, stack);
+      }
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -888,6 +922,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
       pos: { x: card.pos.x, y: card.pos.y },
       rotation: card.rotation,
       deletable: true,
+      transient: false,
     };
     this.gameStateService.bringToFront(newStack);
     this.stacks.push(newStack);
@@ -911,6 +946,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
         y: stack.pos.y + 50 + (Math.random() * 20 - 10)
       },
       deletable: true,
+      transient: true,
     };
     this.gameStateService.bringToFront(newStack);
     this.stacks.push(newStack);
@@ -934,6 +970,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
           y: stack.pos.y + (Math.random() * 100 - 50)
         },
         deletable: true,
+        transient: stack.transient,
       } as CardStack;
     }).filter((cardStack) => cardStack.cards.length > 0);
 
@@ -1087,6 +1124,7 @@ export class GameSimulatorComponent implements OnInit, OnDestroy {
           pos: { x: targetItem.pos.x, y: targetItem.pos.y },
           rotation: targetItem.rotation,
           deletable: true,
+          transient: true,
         };
         this.gameStateService.bringToFront(newStack);
         this.stacks.push(newStack);

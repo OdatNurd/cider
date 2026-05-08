@@ -13,6 +13,7 @@ export interface CardStack extends Positionable {
     cards: GameCard[];
     faceUp: boolean;
     deletable: boolean;
+    transient?: boolean;
     shuffling?: boolean;
     flipping?: boolean;
     rotation?: number;
