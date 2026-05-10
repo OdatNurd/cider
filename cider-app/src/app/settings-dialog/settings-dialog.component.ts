@@ -83,6 +83,14 @@ export class SettingsDialogComponent {
     this.themeService.applyTheme(themeId);
   }
 
+  public get autoLoadProject(): boolean {
+    return this.localStorageService.getAutoLoadLastProject();
+  }
+
+  public set autoLoadProject(value: boolean) {
+    this.localStorageService.setAutoLoadLastProject(value);
+  }
+
   public hideDialog() {
     this.visible = false;
     this.visibleChange.emit(false);

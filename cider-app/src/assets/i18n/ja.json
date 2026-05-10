@@ -143,7 +143,8 @@
         "language": "言語",
         "language-info": "新しい言語を完全に適用するにはページを更新してください。",
         "language-info-electron": "新しい言語を完全に適用するにはアプリケーションを再起動してください。",
-        "dark-mode": "ダークモード"
+        "dark-mode": "ダークモード",
+        "auto-load-project": "起動時に最後に開いたプロジェクトを再読み込みする"
     },
     "simulator": {
         "draw-card": "カードを引く",

@@ -143,7 +143,8 @@
         "language": "Lingua",
         "language-info": "Aggiorna la pagina per applicare completamente la nuova lingua.",
         "language-info-electron": "Riavvia l'applicazione per applicare completamente la nuova lingua.",
-        "dark-mode": "Modalità Scura"
+        "dark-mode": "Modalità Scura",
+        "auto-load-project": "Ricarica l'ultimo progetto aperto all'avvio"
     },
     "simulator": {
         "draw-card": "Pesca una carta",

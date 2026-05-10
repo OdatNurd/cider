@@ -43,6 +43,14 @@ This leaves the localStorage for the tree alone; this would get cleaned up when
 the app next starts, but if you re-open a project from the same path it was at
 previously without quitting, its tree will retain its state.
 
+## Settings
+
+A new application setting has been added which causes the application to reload
+the last loaded project at startup, if there is one. As a part of the startup
+localStorage is updated to make sure that any known projects that no longer
+exist on disk are removed, and that code was augmented to ensure that if the
+last loaded project is one of those, that the setting is removed.
+
 ## Project Tree
 
 The project tree in the sidebar can get a little busy with a lot of assets,

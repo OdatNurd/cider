@@ -143,7 +143,8 @@
         "language": "Język",
         "language-info": "Odśwież stronę, aby w pełni zastosować nowy język.",
         "language-info-electron": "Uruchom ponownie aplikację, aby w pełni zastosować nowy język.",
-        "dark-mode": "Tryb Ciemny"
+        "dark-mode": "Tryb Ciemny",
+        "auto-load-project": "Załaduj ponownie ostatnio otwarty projekt przy uruchomieniu"
     },
     "simulator": {
         "draw-card": "Dobierz kartę",

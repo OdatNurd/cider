@@ -143,7 +143,8 @@
         "language": "Idioma",
         "language-info": "Atualize a página para aplicar completamente o novo idioma.",
         "language-info-electron": "Reinicie o aplicativo para aplicar completamente o novo idioma.",
-        "dark-mode": "Modo Escuro"
+        "dark-mode": "Modo Escuro",
+        "auto-load-project": "Recarregar o último projeto aberto na inicialização"        
     },
     "simulator": {
         "draw-card": "Comprar carta",

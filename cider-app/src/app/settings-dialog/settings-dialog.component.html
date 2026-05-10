@@ -30,6 +30,11 @@
                     [(ngModel)]="selectedTheme" (onChange)="setTheme($event.value)"
                     [placeholder]="'settings.select-theme' | translate" inputId="theme" />
             </div>
+
+            <div class="setting-item" *ngIf="isElectron">
+                <label for="autoLoadProject" class="setting-label">{{'settings.auto-load-project' | translate}}</label>
+                <p-toggleswitch [(ngModel)]="autoLoadProject" inputId="autoLoadProject"></p-toggleswitch>
+            </div>
         </div>
     </ng-template>
 </p-dialog>

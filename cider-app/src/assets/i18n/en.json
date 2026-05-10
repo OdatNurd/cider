@@ -163,7 +163,8 @@
         "language-info": "Refresh the page to fully apply the new language.",
         "language-info-electron": "Restart the application to fully apply the new language.",
         "theme": "Theme",
-        "select-theme": "Select Theme"
+        "select-theme": "Select Theme",
+        "auto-load-project": "Reload last opened project on startup"
     },
     "simulator": {
         "draw-card": "Draw Card",

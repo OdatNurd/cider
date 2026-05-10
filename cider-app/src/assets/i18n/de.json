@@ -143,7 +143,8 @@
         "language": "Sprache",
         "language-info": "Aktualisiere die Seite, um die neue Sprache vollständig anzuwenden.",
         "language-info-electron": "Starte die Anwendung neu, um die neue Sprache vollständig anzuwenden.",
-        "dark-mode": "Dunkelmodus"
+        "dark-mode": "Dunkelmodus",
+        "auto-load-project": "Zuletzt geöffnetes Projekt beim Start neu laden"
     },
     "simulator": {
         "draw-card": "Karte ziehen",

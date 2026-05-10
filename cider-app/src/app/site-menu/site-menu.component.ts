@@ -330,6 +330,7 @@ export class SiteMenuComponent implements OnInit {
       this.electronService.setProjectUnsaved(false);
       this.electronService.setProjectOpen(false);
       this.decksService.selectDeck(undefined);
+      this.localStorageService.clearLastLoadedProject(); 
       this.router.navigateByUrl(`/`);
     });
   }

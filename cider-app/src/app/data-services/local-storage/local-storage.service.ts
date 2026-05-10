@@ -59,8 +59,11 @@ export class LocalStorageService {
   static readonly EXPORT_CONFIG = "export-config";
   static readonly PREVIEW_SETTINGS = "preview-settings";
   static readonly TREE_STATE_PREFIX = "sidebar-tree-state-";
+  static readonly AUTO_LOAD_PROJECT = "auto-load-project";
+  static readonly LAST_LOADED_PROJECT = "last-loaded-project";
 
   public recentProjectUrls: BehaviorSubject<PersistentPath[]>;
+  public initialCleanupDone: Promise<void>;
 
   constructor(
     private electronService: ElectronService) {
@@ -68,7 +71,7 @@ export class LocalStorageService {
       this.getRecentProjectUrlsFromLocalStorage());
 
     // clean up the recent project urls -- remove any that are empty or don't exist
-    this.cleanRecentProjectUrls().then(urls => {
+    this.initialCleanupDone = this.cleanRecentProjectUrls().then(urls => {
       localStorage.setItem(LocalStorageService.RECENT_PROJECT_URLS, JSON.stringify(urls));
       this.recentProjectUrls.next(urls);
     });
@@ -122,12 +125,20 @@ export class LocalStorageService {
    * 
    * @returns 
    */
-  public cleanRecentProjectUrls(): Promise<PersistentPath[]> {
+  public async cleanRecentProjectUrls(): Promise<PersistentPath[]> {
     const urls = this.getRecentProjectUrlsFromLocalStorage();
     const promises = urls.map(url => this.electronService.listDirectory(url)
-      .then(files => files.length > 0 ? url : undefined));
-    const validUrls = Promise.all(promises).then((urls) => urls.filter(url => url !== undefined));
-    return validUrls as Promise<PersistentPath[]>;
+      .then(files => files.length > 0 ? url : undefined).catch(() => undefined));
+    
+    const resolvedUrls = await Promise.all(promises);
+    const validUrls = resolvedUrls.filter(url => url !== undefined) as PersistentPath[];
+
+    const lastLoaded = this.getLastLoadedProject();
+    if (lastLoaded && !validUrls.find(u => u.path === lastLoaded.path)) {
+      this.clearLastLoadedProject();
+    }
+
+    return validUrls;
   }
 
   public getRecentProjectUrls() {
@@ -181,6 +192,27 @@ export class LocalStorageService {
 
   public setTreeState(projectPath: string, state: string[]) {
     localStorage.setItem(`${LocalStorageService.TREE_STATE_PREFIX}${projectPath}`, JSON.stringify(state));
+  }
+
+  public getAutoLoadLastProject(): boolean {
+    return localStorage.getItem(LocalStorageService.AUTO_LOAD_PROJECT) === 'true';
+  }
+
+  public setAutoLoadLastProject(autoLoad: boolean) {
+    localStorage.setItem(LocalStorageService.AUTO_LOAD_PROJECT, autoLoad.toString());
+  }
+
+  public getLastLoadedProject(): PersistentPath | null {
+    const val = localStorage.getItem(LocalStorageService.LAST_LOADED_PROJECT);
+    return val ? JSON.parse(val) : null;
+  }
+
+  public setLastLoadedProject(path: PersistentPath) {
+    localStorage.setItem(LocalStorageService.LAST_LOADED_PROJECT, JSON.stringify(path));
+  }
+
+  public clearLastLoadedProject() {
+    localStorage.removeItem(LocalStorageService.LAST_LOADED_PROJECT);
   }
 
   public async cleanOrphanedStates() {

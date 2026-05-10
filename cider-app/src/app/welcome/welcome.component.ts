@@ -30,6 +30,8 @@ export class WelcomeComponent implements OnInit {
   isElectron: boolean;
   projectHomeUrl$: Observable<PersistentPath | undefined>;
   projectUnsaved$: Observable<boolean>;
+  
+  private autoLoadAttempted: boolean = false;
 
   recentProjectUrls: {
     persistentPath: PersistentPath;
@@ -62,9 +64,22 @@ export class WelcomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.localStorageService.getRecentProjectUrls().subscribe(urls => {
-      this.recentProjectUrls = urls.map(url => this.urlToProjectInfo(url));
+    // Wait for validation to wipe missing directories before auto-loading
+    this.localStorageService.initialCleanupDone.then(() => {
+      this.localStorageService.getRecentProjectUrls().subscribe(urls => {
+        this.recentProjectUrls = urls.map(url => this.urlToProjectInfo(url));
+        
+        if (!this.autoLoadAttempted && this.localStorageService.getAutoLoadLastProject()) {
+          this.autoLoadAttempted = true;
+          const lastProject = this.localStorageService.getLastLoadedProject();
+          
+          if (lastProject && urls.find(u => u.path === lastProject.path)) {
+            this.openProjectProcedure(lastProject);
+          }
+        }
+      });
     });
+
     // uncomment to test recent projects
     // this.isElectron = true;
     // const urls = [
@@ -113,6 +128,7 @@ export class WelcomeComponent implements OnInit {
   }
 
   newProjectProcedure(keepEmpty: boolean) {
+    this.localStorageService.clearLastLoadedProject();
     this.db.resetDatabase(keepEmpty).then(() => {
       this.assetsService.updateAssetUrls();
       this.electronService.setProjectUnsaved(true);
@@ -140,6 +156,7 @@ export class WelcomeComponent implements OnInit {
   openProjectProcedure(url: PersistentPath) {
     this.electronService.selectDirectory(url);
     this.localStorageService.addRecentProjectUrl(url);
+    this.localStorageService.setLastLoadedProject(url);
     this.electronService.setProjectUnsaved(false);
     this.loadingIndeterminate = true;
     this.loadingHeader = 'Opening Project';
