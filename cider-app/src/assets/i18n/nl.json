@@ -75,7 +75,7 @@
         "reset-database": "Database Herstellen",
         "import-database": "Database Importeren",
         "export-database": "Database Exporteren",
-        "export-cards": "Kaarten Exporteren",
+        "export-cards": "Huidig deck exporteren",
         "exit-project": "Project Afsluiten",
         "exit-cider": "Cider Afsluiten"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Document Bewerken / Hernoemen",
         "delete-document": "Document Verwijderen",
         "cards": "Kaarten",
-        "export-cards": "Kaarten Exporteren",
+        "export-cards": "Dit deck exporteren",
         "thumbnails": "Miniaturen",
         "attributes": "Attributen",
         "add-new-card-template": "Nieuw Kaartsjabloon Toevoegen",

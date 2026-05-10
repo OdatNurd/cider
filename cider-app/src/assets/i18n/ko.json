@@ -75,7 +75,7 @@
         "reset-database": "데이터베이스 초기화",
         "import-database": "데이터베이스 가져오기",
         "export-database": "데이터베이스 내보내기",
-        "export-cards": "카드 내보내기",
+        "export-cards": "현재 덱 내보내기",
         "exit-project": "프로젝트 종료",
         "exit-cider": "Cider 종료"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "문서 편집 / 이름 변경",
         "delete-document": "문서 삭제",
         "cards": "카드",
-        "export-cards": "카드 내보내기",
+        "export-cards": "이 덱 내보내기",
         "thumbnails": "썸네일",
         "attributes": "속성",
         "add-new-card-template": "새 카드 템플릿 추가",

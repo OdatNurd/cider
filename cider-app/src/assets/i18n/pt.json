@@ -75,7 +75,7 @@
         "reset-database": "Redefinir Banco de Dados",
         "import-database": "Importar Banco de Dados",
         "export-database": "Exportar Banco de Dados",
-        "export-cards": "Exportar Cartas",
+        "export-cards": "Exportar baralho atual",
         "exit-project": "Sair do Projeto",
         "exit-cider": "Sair do Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Editar / Renomear Documento",
         "delete-document": "Excluir Documento",
         "cards": "Cartas",
-        "export-cards": "Exportar Cartas",
+        "export-cards": "Exportar este baralho",
         "thumbnails": "Miniaturas",
         "attributes": "Atributos",
         "add-new-card-template": "Adicionar Novo Template de Carta",

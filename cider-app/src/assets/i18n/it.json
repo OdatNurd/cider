@@ -75,7 +75,7 @@
         "reset-database": "Resetta Database",
         "import-database": "Importa Database",
         "export-database": "Esporta Database",
-        "export-cards": "Esporta Carte",
+        "export-cards": "Esporta il mazzo attuale",
         "exit-project": "Chiudi Progetto",
         "exit-cider": "Esci da Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Modifica / Rinomina Documento",
         "delete-document": "Elimina Documento",
         "cards": "Carte",
-        "export-cards": "Esporta Carte",
+        "export-cards": "Esporta questo mazzo",
         "thumbnails": "Miniature",
         "attributes": "Attributi",
         "add-new-card-template": "Aggiungi Nuovo Template Carta",

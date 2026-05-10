@@ -75,7 +75,7 @@
         "reset-database": "Restablecer Base de Datos",
         "import-database": "Importar Base de Datos",
         "export-database": "Exportar Base de Datos",
-        "export-cards": "Exportar Cartas",
+        "export-cards": "Exportar mazo actual",
         "exit-project": "Salir del Proyecto",
         "exit-cider": "Salir de Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Editar / Renombrar Documento",
         "delete-document": "Eliminar Documento",
         "cards": "Cartas",
-        "export-cards": "Exportar Cartas",
+        "export-cards": "Exportar este mazo",
         "thumbnails": "Miniaturas",
         "attributes": "Atributos",
         "add-new-card-template": "Agregar Nueva Plantilla de Carta",

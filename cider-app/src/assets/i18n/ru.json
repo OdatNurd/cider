@@ -75,7 +75,7 @@
         "reset-database": "Сбросить базу данных",
         "import-database": "Импортировать базу данных",
         "export-database": "Экспортировать базу данных",
-        "export-cards": "Экспорт карт",
+        "export-cards": "Экспортировать текущую колоду",
         "exit-project": "Выйти из проекта",
         "exit-cider": "Выйти из Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Редактировать / Переименовать документ",
         "delete-document": "Удалить документ",
         "cards": "Карты",
-        "export-cards": "Экспорт карт",
+        "export-cards": "Экспортировать эту колоду",
         "thumbnails": "Миниатюры",
         "attributes": "Атрибуты",
         "add-new-card-template": "Добавить новый шаблон карты",

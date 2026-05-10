@@ -28,6 +28,27 @@ In addition, as a Slackware user `deb` files are not as useful (although they
 can be turned into packages), so the Electron builder for Linux was extended to
 also generate a Tarball.
 
+## Card Exports
+
+The main menu entry for exporting cards is only enabled when there is a deck
+selected, and even then only exports the cards from that one deck. Similarly
+the context menus in the sidebar export the selected deck as well. However, in
+both cases the menus use the word `cards` and not `deck`, which is misleading
+since you cannot export more than one deck at a time.
+
+This was changed in the menus so that it is clear what is being exported; in
+the case of the main menu, the entry is changed to `current deck` from `cards`
+and similar in the context menus.
+
+Additionally, the names of the exported files has been adjusted from the
+harcoded base name `cards` to the name of the deck being exported, prefixed by
+the name of the project, and with some normalization in the filename.
+
+Lastly, the export page itself was visually tightened up so that the entries
+for settings that don't apply to the currently selected type of file do not
+appear; for example you don't get to set the `TableTop Simulator` DPI if you
+are exporting a PDF.
+
 ## Welcome Screen
 
 While playing with the application and trying things the list of projects on the

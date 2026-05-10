@@ -75,7 +75,7 @@
         "reset-database": "データベースをリセット",
         "import-database": "データベースをインポート",
         "export-database": "データベースをエクスポート",
-        "export-cards": "カードをエクスポート",
+        "export-cards": "現在のデッキをエクスポート",
         "exit-project": "プロジェクトを終了",
         "exit-cider": "Ciderを終了"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "ドキュメントを編集 / 名前変更",
         "delete-document": "ドキュメントを削除",
         "cards": "カード",
-        "export-cards": "カードをエクスポート",
+        "export-cards": "このデッキをエクスポート",
         "thumbnails": "サムネイル",
         "attributes": "属性",
         "add-new-card-template": "新しいカードテンプレートを追加",

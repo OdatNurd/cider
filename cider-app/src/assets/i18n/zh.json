@@ -75,7 +75,7 @@
         "reset-database": "重置数据库",
         "import-database": "导入数据库",
         "export-database": "导出数据库",
-        "export-cards": "导出卡片",
+        "export-cards": "导出当前牌组",
         "exit-project": "退出项目",
         "exit-cider": "退出 Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "编辑 / 重命名文档",
         "delete-document": "删除文档",
         "cards": "卡片",
-        "export-cards": "导出卡片",
+        "export-cards": "导出此牌组",
         "thumbnails": "缩略图",
         "attributes": "属性",
         "add-new-card-template": "添加新卡片模板",

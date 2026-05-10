@@ -8,7 +8,7 @@ import JSZip from 'jszip';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import pLimit from 'p-limit';
 import FileUtils from '../shared/utils/file-utils';
-import { lastValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import StringUtils from '../shared/utils/string-utils';
 import GeneralUtils from '../shared/utils/general-utils';
 import { ConfirmationService } from 'primeng/api';
@@ -16,6 +16,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ColorManagementService } from '../data-services/services/color-management.service';
 
 import { LocalStorageService } from '../data-services/local-storage/local-storage.service';
+import { DecksService } from '../data-services/services/decks.service';
+import { ElectronService } from '../data-services/electron/electron.service';
 
 @Component({
   selector: 'app-export-cards',
@@ -132,7 +134,9 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
     private translate: TranslateService,
     private localStorageService: LocalStorageService,
     private colorManagementService: ColorManagementService,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private decksService: DecksService,
+    private electronService: ElectronService) {
     cardsService.getAll().then(cards => {
       // check cards for front/back templates being defined
       const cardsWithTemplatesDefined = cards.filter(card => card.frontCardTemplateId);
@@ -550,6 +554,29 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
     this.exportSelectionDialogVisible = true;
   }
 
+  private async getExportBaseName(): Promise<string> {
+    const projectUrl = await firstValueFrom(this.electronService.getProjectHomeUrl());
+    const rawProjectData = projectUrl ? projectUrl.path : ''; 
+
+    let safeProjectName = '';
+    if (rawProjectData) {
+      // Extract the last folder component if it's a path (handles both / and \)
+      const pathParts = rawProjectData.split(/[/\\]/);
+      const projectName = pathParts[pathParts.length - 1];
+      if (projectName) {
+        safeProjectName = projectName.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') + '-';
+      }
+    }
+
+    let safeDeckName = 'cards';
+    const deck = await firstValueFrom(this.decksService.getSelectedDeck());
+    if (deck && deck.name) {
+      safeDeckName = deck.name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+    }
+
+    return `${safeProjectName}${safeDeckName}`;
+  }
+
   public export() {
     if (this.exportType === ExportCardsComponent.SHEET_EXPORT
       && this.selectedPaper.name === 'Tabletop Simulator') {
@@ -652,10 +679,11 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
     });
     const sheetImages = (await Promise.all(promisedSheetImages$)).flatMap(sheetImages => sheetImages);
 
+    const baseName = await this.getExportBaseName();
     this.loadingInfo = 'Zipping up files...';
     const zippedImages = await this.zipFiles(sheetImages);
     this.loadingInfo = 'Saving file...';
-    FileUtils.saveAs(zippedImages, 'cards.zip');
+    FileUtils.saveAs(zippedImages, baseName + '.zip');
     this.loadingPercent = 100;
     this.sheet = this.slicedCards ? this.slicedCards[this.currentPageIndex] : [];
     this.showFront = true;
@@ -721,8 +749,12 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
       pageOrientation: this.selectedPaper.orientation,
       pageMargins: [0, 0, 0, 0] as [number, number, number, number]
     };
+
+    const baseName = await this.getExportBaseName();
+    const fileName = baseName + '-sheets.pdf';
+
     pdfMake.createPdf(docDefinition).getBlob((blob) => {
-      FileUtils.saveAs(blob, 'card-sheets.pdf');
+      FileUtils.saveAs(blob, fileName);
       this.loadingPercent = 100;
       this.sheet = this.slicedCards ? this.slicedCards[this.currentPageIndex] : [];
       this.displayLoading = false
@@ -794,10 +826,11 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
         allExportedFiles = allExportedFiles.concat(chunkFiles);
       }
 
+      const baseName = await this.getExportBaseName();
       this.loadingInfo = 'Zipping up files...';
       const blob = await this.zipFiles(allExportedFiles);
       this.loadingInfo = 'Saving file...';
-      FileUtils.saveAs(blob, 'cards.zip');
+      FileUtils.saveAs(blob, baseName + '.zip');
 
     } catch (err) {
       this.loadingInfo = 'Failed to load card cache.';

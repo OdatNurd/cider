@@ -75,7 +75,7 @@
         "reset-database": "Réinitialiser la base de données",
         "import-database": "Importer une base de données",
         "export-database": "Exporter la base de données",
-        "export-cards": "Exporter les cartes",
+        "export-cards": "Exporter le deck actuel",
         "exit-project": "Quitter le projet",
         "exit-cider": "Quitter Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Modifier / Renommer le document",
         "delete-document": "Supprimer le document",
         "cards": "Cartes",
-        "export-cards": "Exporter les cartes",
+        "export-cards": "Exporter ce deck",
         "thumbnails": "Vignettes",
         "attributes": "Attributs",
         "add-new-card-template": "Ajouter un nouveau modèle de carte",

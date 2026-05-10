@@ -75,7 +75,7 @@
         "reset-database": "Veritabanını Sıfırla",
         "import-database": "Veritabanını İçe Aktar",
         "export-database": "Veritabanını Dışa Aktar",
-        "export-cards": "Kartları Dışa Aktar",
+        "export-cards": "Mevcut desteyi dışa aktar",
         "exit-project": "Projeyi Kapat",
         "exit-cider": "Cider'dan Çık"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Belgeyi Düzenle / Yeniden Adlandır",
         "delete-document": "Belgeyi Sil",
         "cards": "Kartlar",
-        "export-cards": "Kartları Dışa Aktar",
+        "export-cards": "Bu desteyi dışa aktar",
         "thumbnails": "Küçük Resimler",
         "attributes": "Öznitelikler",
         "add-new-card-template": "Yeni Kart Şablonu Ekle",

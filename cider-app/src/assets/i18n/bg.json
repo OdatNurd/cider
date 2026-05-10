@@ -75,7 +75,7 @@
         "reset-database": "Нулиране на базата данни",
         "import-database": "Импортиране на база данни",
         "export-database": "Експортиране на база данни",
-        "export-cards": "Експортиране на карти",
+        "export-cards": "Експортиране на текущото тесте",
         "exit-project": "Изход от проект",
         "exit-cider": "Изход от Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Редактирай / Преименувай документ",
         "delete-document": "Изтрий документ",
         "cards": "Карти",
-        "export-cards": "Експортиране на карти",
+        "export-cards": "Експортиране на това тесте",
         "thumbnails": "Миниатюри",
         "attributes": "Атрибути",
         "add-new-card-template": "Добави нов шаблон за карта",

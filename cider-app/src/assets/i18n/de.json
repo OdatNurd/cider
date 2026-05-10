@@ -75,7 +75,7 @@
         "reset-database": "Datenbank zurücksetzen",
         "import-database": "Datenbank importieren",
         "export-database": "Datenbank exportieren",
-        "export-cards": "Karten exportieren",
+        "export-cards": "Aktuelles Deck exportieren",
         "exit-project": "Projekt schließen",
         "exit-cider": "Cider beenden"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Dokument bearbeiten / umbenennen",
         "delete-document": "Dokument löschen",
         "cards": "Karten",
-        "export-cards": "Karten exportieren",
+        "export-cards": "Dieses Deck exportieren",
         "thumbnails": "Miniaturen",
         "attributes": "Attribute",
         "add-new-card-template": "Neue Kartenvorlage hinzufügen",

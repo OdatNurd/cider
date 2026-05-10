@@ -75,7 +75,7 @@
         "reset-database": "Resetuj Bazę Danych",
         "import-database": "Importuj Bazę Danych",
         "export-database": "Eksportuj Bazę Danych",
-        "export-cards": "Eksportuj Karty",
+        "export-cards": "Eksportuj obecną talię",
         "exit-project": "Zamknij Projekt",
         "exit-cider": "Zamknij Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Edytuj / Zmień Nazwę Dokumentu",
         "delete-document": "Usuń Dokument",
         "cards": "Karty",
-        "export-cards": "Eksportuj Karty",
+        "export-cards": "Eksportuj tę talię",
         "thumbnails": "Miniatury",
         "attributes": "Atrybuty",
         "add-new-card-template": "Dodaj Nowy Szablon Karty",

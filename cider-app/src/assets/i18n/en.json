@@ -75,7 +75,7 @@
         "reset-database": "Reset Database",
         "import-database": "Import Database",
         "export-database": "Export Database",
-        "export-cards": "Export Cards",
+        "export-cards": "Export current deck",
         "exit-project": "Exit Project",
         "exit-cider": "Exit Cider"
     },
@@ -92,7 +92,7 @@
         "edit-rename-document": "Edit / Rename Document",
         "delete-document": "Delete Document",
         "cards": "Cards",
-        "export-cards": "Export Cards",
+        "export-cards": "Export this deck",
         "thumbnails": "Thumbnails",
         "attributes": "Attributes",
         "add-new-card-template": "Add New Card Template",
