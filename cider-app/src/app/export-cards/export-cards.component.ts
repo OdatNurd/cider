@@ -41,7 +41,8 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
     { name: 'A4 (Portrait)', width: 8.27, height: 11.69, orientation: 'portrait', mirrorBacksX: true, mirrorBacksY: false },
     { name: 'Custom (Landscape)', width: 8.5, height: 11, orientation: 'landscape', mirrorBacksX: false, mirrorBacksY: true },
     { name: 'Custom (Portrait)', width: 8.5, height: 11, orientation: 'portrait', mirrorBacksX: true, mirrorBacksY: false },
-    { name: 'Tabletop Simulator', width: 8.5, height: 11, orientation: 'portrait', mirrorBacksX: false, mirrorBacksY: false }
+    { name: 'Tabletop Simulator', width: 8.5, height: 11, orientation: 'portrait', mirrorBacksX: false, mirrorBacksY: false },
+    { name: 'Tabletop Club', width: 8.5, height: 11, orientation: 'portrait', mirrorBacksX: false, mirrorBacksY: false }
   ];
   @ViewChildren('cardSheets') cardSheets: QueryList<any> = {} as QueryList<any>;
   @ViewChildren('cardSheetCards') cardSheetCards: QueryList<CardPreviewComponent> = {} as QueryList<CardPreviewComponent>;
@@ -222,7 +223,7 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
       this.changePaperType(); // This resets some values based on paper type
 
       // Re-apply values that changePaperType might have reset if they are valid for the current paper type
-      if (config.paperConfig && !this.selectedPaper.name.includes('Tabletop Simulator')) {
+      if (config.paperConfig && !this.selectedPaper.name.includes('Tabletop Simulator') && !this.selectedPaper.name.includes('Tabletop Club')) {
         this.paperWidth = config.paperConfig.width;
         this.paperHeight = config.paperConfig.height;
         this.cardsPerPage = config.paperConfig.cardsPerPage;
@@ -317,10 +318,11 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
   }
 
   public changePaperType() {
-    if (this.selectedPaper.name === 'Tabletop Simulator') {
+    if (this.selectedPaper.name === 'Tabletop Simulator' || this.selectedPaper.name === 'Tabletop Club') {
       this.cardGap = 0;
       this.paperMarginX = 0;
       this.paperMarginY = 0;
+      this.showCutMarks = false;
       
       const firstCard = this.cardSheetCards?.first;
       if (firstCard && firstCard.initialWidth) {
@@ -334,10 +336,18 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
       
       this.mirrorBacksX = this.selectedPaper.mirrorBacksX;
       this.mirrorBacksY = this.selectedPaper.mirrorBacksY;
-      this.cardsPerPage = 69;
-      this.showFront = true;
-      this.showBack = false;
-      this.calculatePixelRatio();
+      
+      if (this.selectedPaper.name === 'Tabletop Simulator') {
+        this.cardsPerPage = 69;
+        this.showFront = true;
+        this.showBack = false;
+        this.calculatePixelRatio();
+      } else {
+        this.cardsPerPage = 69;
+        this.showFront = true;
+        this.showBack = !this.excludeCardBacks;
+      }
+      
       this.updateSlices();
     } else {
       this.paperWidth = this.selectedPaper.width;
@@ -354,7 +364,7 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
       this.updateSlices();
     }
     // console.log('change paper type', this.selectedPaper.name, this.mirrorBacksX, this.mirrorBacksY);
-    if (this.selectedPaper.name !== 'Tabletop Simulator') {
+    if (this.selectedPaper.name !== 'Tabletop Simulator' && this.selectedPaper.name !== 'Tabletop Club') {
       this.autoFit();
     }
     this.saveSettings();
@@ -410,7 +420,7 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
       const firstCard = this.cardSheetCards.first;
       if (firstCard.initialWidth && firstCard.initialHeight) {
         setTimeout(() => {
-          if (this.selectedPaper.name === 'Tabletop Simulator') {
+          if (this.selectedPaper.name === 'Tabletop Simulator' || this.selectedPaper.name === 'Tabletop Club') {
             this.changePaperType();
           } else {
             this.autoFit();
@@ -496,7 +506,7 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
     if (!firstCard || !firstCard.initialWidth || !firstCard.initialHeight) {
       return;
     }
-    if (this.selectedPaper.name === 'Tabletop Simulator') {
+    if (this.selectedPaper.name === 'Tabletop Simulator' || this.selectedPaper.name === 'Tabletop Club') {
       return;
     }
 
@@ -582,7 +592,12 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
       && this.selectedPaper.name === 'Tabletop Simulator') {
       this.exportCardSheetsAsImages().catch(err => {
         this.displayErrorDialog(err);
-      });;
+      });
+    } else if (this.exportType === ExportCardsComponent.SHEET_EXPORT
+      && this.selectedPaper.name === 'Tabletop Club') {
+      this.exportTabletopClub().catch(err => {
+        this.displayErrorDialog(err);
+      });
     } else if (this.exportType === ExportCardsComponent.SHEET_EXPORT) {
       this.exportCardSheets().catch(err => {
         this.displayErrorDialog(err);
@@ -590,7 +605,7 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
     } else {
       this.exportIndividualImages().catch(err => {
         this.displayErrorDialog(err);
-      });;
+      });
     }
   }
 
@@ -690,6 +705,159 @@ export class ExportCardsComponent implements OnInit, AfterViewChecked {
     this.showBack = false;
     this.renderCache = false;
     this.displayLoading = false
+  }
+
+  private async exportTabletopClub() {
+    this.displayLoading = true;
+    this.loadingPercent = 0;
+    this.renderCache = true;
+    const limit = pLimit(3);
+
+    await this.prerenderCardImages();
+    this.loadingPercent = 0;
+
+    const basePackageName = await this.getExportBaseName();
+    let configLines: string[] = [];
+    let backImageMap = new Map<string, string>(); // base64 -> filename
+    let backCounter = 0;
+    let fileOutputs: {name: string, blob: Blob}[] = [];
+    let nameCount = new Map<string, number>();
+
+    // Map to group cards by their deck unmodified name
+    let deckStacks = new Map<string, string[]>(); // DeckName -> [CardTitle1, CardTitle2]
+
+    const getUniqueName = (base: string) => {
+        let count = nameCount.get(base) || 0;
+        count++;
+        nameCount.set(base, count);
+        return count === 1 ? base : `${base} ${count}`;
+    };
+
+    let scaleStr = 'Vector2(6.35, 8.89)';
+    const firstCard = this.cardSheetCards?.first;
+    if (firstCard && firstCard.initialWidth) {
+      const cardWidthInches = firstCard.initialWidth / this.paperDpi;
+      const cardHeightInches = firstCard.initialHeight / this.paperDpi;
+      const widthCm = (cardWidthInches * 2.54).toFixed(2);
+      const heightCm = (cardHeightInches * 2.54).toFixed(2);
+      scaleStr = `Vector2(${widthCm}, ${heightCm})`;
+    }
+
+    configLines.push(`; cards/config.cfg`);
+    configLines.push('[*]');
+    configLines.push(`scale = ${scaleStr}`);
+    configLines.push('');
+
+    const decks = await this.decksService.getAll();
+    const deckLookup = new Map(decks.map(d => [d.id, d.name]));
+    
+    // We need to track front/back relationships across the render passes
+    let cardMetadata: { frontName: string, backName?: string, title: string, deckName: string }[] = [];
+
+    for (let sheetIndex = 0; sheetIndex < this.slicedCards.length; sheetIndex++) {
+        const sheet = this.slicedCards[sheetIndex];
+        let currentChunkMetadata: any[] = [];
+
+        // Render Fronts
+        this.sheet = sheet;
+        this.showFront = true;
+        this.showBack = false;
+        this.loadingInfo = `Rendering chunk ${sheetIndex+1} fronts...`;
+        await GeneralUtils.delay(1000); // Allow DOM to process the next sheet chunk
+        
+        await Promise.all(this.cardSheetCards.map(c => lastValueFrom(c.isCacheLoaded())));
+        
+        const cardSheetCardsArr = this.cardSheetCards.toArray();
+        for (let i = 0; i < cardSheetCardsArr.length; i++) {
+          const cardPreview = cardSheetCardsArr[i];
+          const imgUri = await limit(() => this.imageRendererService.toPng((<any>cardPreview).element.nativeElement, { pixelRatio: this.individualExportPixelRatio || 1 }));
+          
+          const deckName = deckLookup.get(cardPreview.card?.deckId) || 'Unsorted';
+          const cardTitle = getUniqueName(cardPreview.card?.name || 'Card');
+          const cardNameSafe = StringUtils.toKebabCase(cardPreview.card?.name || 'card') + `_${sheetIndex}_${i}`;
+          const imgName = `${cardNameSafe}_front.png`;
+          
+          currentChunkMetadata.push({ frontName: imgName, title: cardTitle, deckName: deckName });
+          fileOutputs.push({ name: imgName, blob: this.dataUrlToFile(imgUri, imgName) });
+          this.loadingPercent += 40.0 / this.expandedCards.length;
+        }
+
+        // Render Backs (Only if not excluded)
+        if (!this.excludeCardBacks) {
+          this.showFront = false;
+          this.showBack = true;
+          this.loadingInfo = `Rendering chunk ${sheetIndex+1} backs...`;
+          await GeneralUtils.delay(1000);
+          await Promise.all(this.cardSheetCards.map(c => lastValueFrom(c.isCacheLoaded())));
+          
+          const cardSheetCardsArrBack = this.cardSheetCards.toArray();
+          for (let i = 0; i < cardSheetCardsArrBack.length; i++) {
+            const cardPreview = cardSheetCardsArrBack[i];
+            const imgUri = await limit(() => this.imageRendererService.toPng((<any>cardPreview).element.nativeElement, { pixelRatio: this.individualExportPixelRatio || 1 }));
+            
+            let backName = backImageMap.get(imgUri);
+            if (!backName) {
+              backCounter++;
+              backName = `back_${backCounter}.png`;
+              backImageMap.set(imgUri, backName);
+              fileOutputs.push({ name: backName, blob: this.dataUrlToFile(imgUri, backName) });
+              
+              configLines.push(`[${backName}]`);
+              configLines.push(`ignore = true`);
+              configLines.push('');
+            }
+            
+            currentChunkMetadata[i].backName = backName;
+            this.loadingPercent += 40.0 / this.expandedCards.length;
+          }
+        }
+        cardMetadata = cardMetadata.concat(currentChunkMetadata);
+    }
+
+    // Finalize config and stacks
+    cardMetadata.forEach(meta => {
+      configLines.push(`[${meta.frontName}]`);
+      configLines.push(`name = "${meta.title}"`);
+      if (meta.backName) {
+        configLines.push(`back_face = "${meta.backName}"`);
+      }
+      configLines.push('');
+
+      if (!deckStacks.has(meta.deckName)) {
+        deckStacks.set(meta.deckName, []);
+      }
+      deckStacks.get(meta.deckName)!.push(meta.title);
+    });
+    
+    // Build stacks.cfg content
+    let stacksLines: string[] = ['; cards/stacks.cfg'];
+    deckStacks.forEach((items, deckName) => {
+      stacksLines.push(`[${deckName}]`);
+      stacksLines.push(`desc = "Exported from Cider"`);
+      stacksLines.push(`items = [\n  ${items.map(item => `"${item}"`).join(',\n  ')}\n]`);
+      stacksLines.push('');
+    });
+
+    const zip = new JSZip();
+    const subFolder = zip.folder('cards');
+    
+    if (subFolder) {
+      subFolder.file('config.cfg', configLines.join('\n'));
+      subFolder.file('stacks.cfg', stacksLines.join('\n'));
+      fileOutputs.forEach(f => subFolder.file(f.name, f.blob));
+    }
+
+    this.loadingInfo = 'Zipping up files...';
+    const blob = await zip.generateAsync({ type: 'blob' });
+    this.loadingInfo = 'Saving file...';
+    FileUtils.saveAs(blob, basePackageName + '.zip');
+
+    this.loadingPercent = 100;
+    this.sheet = this.slicedCards ? this.slicedCards[this.currentPageIndex] : [];
+    this.showFront = true;
+    this.showBack = false;
+    this.renderCache = false;
+    this.displayLoading = false;
   }
 
   private async exportCardSheets() {

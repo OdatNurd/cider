@@ -44,10 +44,15 @@ Additionally, the names of the exported files has been adjusted from the
 harcoded base name `cards` to the name of the deck being exported, prefixed by
 the name of the project, and with some normalization in the filename.
 
-Lastly, the export page itself was visually tightened up so that the entries
-for settings that don't apply to the currently selected type of file do not
-appear; for example you don't get to set the `TableTop Simulator` DPI if you
-are exporting a PDF.
+the export page itself was visually tightened up so that the entries for
+settings that don't apply to the currently selected type of file do not appear;
+for example you don't get to set the `Tabletop Simulator` DPI if you are
+exporting a PDF.
+
+Lastly, a simple export for `Tabletop Club` has been added; this works as does
+for `Tabletop Simulator`, but structured differently. This means that currently
+a multi-deck game requires more work since each asset pack can contain only one
+`cards` folder, but this is good enough for now.
 
 ## Welcome Screen
 

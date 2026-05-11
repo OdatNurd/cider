@@ -244,7 +244,7 @@
               (onChange)="changePaperType()"></p-select>
           </div>
           
-          @if (!selectedPaper.name.includes('Tabletop Simulator')) {
+          @if (!selectedPaper.name.includes('Tabletop Simulator') && !selectedPaper.name.includes('Tabletop Club')) {
             <div class="p-d-flex p-flex-row">
               <div class="p-field p-mr-2">
                 <label [for]="paperWidth">{{'export.paper-width' | translate}}</label>
@@ -295,7 +295,7 @@
               <label for="excludeCardBacks">{{'export.exclude-card-backs' | translate}}</label>
             </div>
             
-            @if (!selectedPaper.name.includes('Tabletop Simulator')) {
+            @if (!selectedPaper.name.includes('Tabletop Simulator') && !selectedPaper.name.includes('Tabletop Club')) {
               <div class="checkbox-item">
                 <p-checkbox name="mirrorBacksX" class="p-mr-2" [binary]="true" [(ngModel)]="mirrorBacksX"
                   inputId="mirrorBacksX" (onChange)="saveSettings()"></p-checkbox>
@@ -316,7 +316,7 @@
             }
           </div>
           
-          @if (showCutMarks && !selectedPaper.name.includes('Tabletop Simulator')) {
+          @if (showCutMarks && !selectedPaper.name.includes('Tabletop Simulator') && !selectedPaper.name.includes('Tabletop Club')) {
             <div class="p-d-flex p-flex-row">
               <div class="p-field p-mr-2">
                 <label [for]="cutBleed">{{'export.cut-bleed' | translate}}</label>
@@ -327,6 +327,16 @@
                 <label [for]="cutMarkLength">{{'export.cut-mark-length' | translate}}</label>
                 <input type="number" pInputText [id]="cutMarkLength" [(ngModel)]="cutMarkLength" required autofocus
                    (ngModelChange)="saveSettings()" />
+              </div>
+            </div>
+          }
+
+          @if (selectedPaper.name.includes('Tabletop Club')) {
+            <div class="p-d-flex p-flex-row">
+              <div class="p-field">
+                <label [for]="individualExportPixelRatio">Export Image Scale</label>
+                <input type="number" pInputText [id]="individualExportPixelRatio" [(ngModel)]="individualExportPixelRatio"
+                  required autofocus (ngModelChange)="saveSettings()" />
               </div>
             </div>
           }
@@ -348,13 +358,13 @@
             }
           </div>
 
-          @if (!selectedPaper.name.includes('Tabletop Simulator')) {
+          @if (!selectedPaper.name.includes('Tabletop Simulator') && !selectedPaper.name.includes('Tabletop Club')) {
             <div class="p-field">
               <p-message severity="info">{{'export.export-information' | translate}}</p-message>
             </div>
           }
 
-          @if (!selectedPaper.name.includes('Tabletop Simulator')) {
+          @if (!selectedPaper.name.includes('Tabletop Simulator') && !selectedPaper.name.includes('Tabletop Club')) {
             <div class="p-field soft-proofing-section">
               <div class="section-title">
                 {{'export.soft-proofing-title' | translate}}
